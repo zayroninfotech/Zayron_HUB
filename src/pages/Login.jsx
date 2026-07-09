@@ -548,11 +548,8 @@ export default function Login() {
               {/* Logo */}
               <div className="fc-logo">
                 <div className="fc-logo-img"><img src="/static/img/logo1.png" alt="Zayron" /></div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div className="fc-logo-txt">
-                    <div className="name">Zayron Suite</div>
-                  </div>
-                  <div className="fc-live-badge"><div className="fc-live-dot" />Live</div>
+                <div className="fc-logo-txt">
+                  <div className="name">Zayron Suite</div>
                 </div>
               </div>
 
