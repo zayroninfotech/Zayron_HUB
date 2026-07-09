@@ -101,7 +101,12 @@ class EmployeeDetailsSubmitView(APIView):
 
         portal_user = None
         raw_password = None
-        if not User.objects.filter(email=employee.email).exists():
+        db = _mongo_db()
+        django_user = User.objects.filter(email=employee.email).first()
+        mongo_user_exists = bool(db.users.find_one({'email': employee.email}))
+
+        if not django_user:
+            # Brand new user — create in both Django and MongoDB
             username = _generate_username(employee.name, employee.email)
             raw_password = _generate_password()
             portal_user = User.objects.create_user(
@@ -112,10 +117,14 @@ class EmployeeDetailsSubmitView(APIView):
                 last_name=' '.join(employee.name.split()[1:]) if len(employee.name.split()) > 1 else '',
                 role='employee',
             )
-            try:
-                _insert_mongo_user(username, employee.email, raw_password, employee)
-            except Exception:
-                pass
+            _insert_mongo_user(username, employee.email, raw_password, employee)
+        elif not mongo_user_exists:
+            # Django user exists (from failed previous attempt) but MongoDB missing — insert it
+            raw_password = _generate_password()
+            portal_user = django_user
+            portal_user.set_password(raw_password)
+            portal_user.save()
+            _insert_mongo_user(django_user.username, employee.email, raw_password, employee)
 
         # Send all emails in background so response returns immediately
         def _send_emails():
