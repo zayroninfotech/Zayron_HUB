@@ -590,11 +590,6 @@ export default function Login() {
                     </button>
                   </form>
 
-                  <div className="feat-strip">
-                    {[['🔒','Encrypted'],['⚡','Fast Access'],['📋','Paperless']].map(([i,l]) => (
-                      <div key={l} className="feat-item"><span>{i}</span>{l}</div>
-                    ))}
-                  </div>
                 </>
               )}
 
