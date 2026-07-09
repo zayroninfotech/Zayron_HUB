@@ -94,10 +94,18 @@ class EmployeeDetailsSubmitView(APIView):
         if not serializer.is_valid():
             return Response({'error': str(serializer.errors), 'details': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-        details = serializer.save()
+        try:
+            details = serializer.save()
+        except Exception as e:
+            import traceback
+            return Response({'error': 'Save failed', 'detail': str(e), 'trace': traceback.format_exc()}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        employee.status = 'completed'
-        employee.save()
+        try:
+            employee.status = 'completed'
+            employee.save()
+        except Exception as e:
+            import traceback
+            return Response({'error': 'Status update failed', 'detail': str(e), 'trace': traceback.format_exc()}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Run user creation + all emails in background — return response instantly
         emp_email  = employee.email
