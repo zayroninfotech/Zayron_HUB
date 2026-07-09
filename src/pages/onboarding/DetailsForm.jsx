@@ -89,11 +89,18 @@ export default function DetailsForm() {
       const fd = new FormData()
       Object.entries({ ...form, ifsc_code: form.ifsc_code.toUpperCase() }).forEach(([k, v]) => fd.append(k, v))
       Object.entries(files).forEach(([k, v]) => { if (v) fd.append(k, v) })
-      await api.post(`/documents/submit/${token}/`, fd)
+      console.log('[DetailsForm] Submitting to:', `/documents/submit/${token}/`)
+      console.log('[DetailsForm] Form fields:', { ...form })
+      console.log('[DetailsForm] Files:', Object.fromEntries(Object.entries(files).map(([k,v]) => [k, v?.name || null])))
+      const res = await api.post(`/documents/submit/${token}/`, fd)
+      console.log('[DetailsForm] Success:', res.status, res.data)
       toast.success('Details submitted successfully!')
       navigate(`/onboarding/${token}/complete`)
     } catch (err) {
       const d = err.response?.data
+      console.error('[DetailsForm] Error status:', err.response?.status)
+      console.error('[DetailsForm] Error response:', d)
+      console.error('[DetailsForm] Full error:', err)
       const msg = d?.error || d?.detail || JSON.stringify(d) || err.message || 'Submission failed.'
       if (d && d.details) { setErrors(d.details); }
       toast.error(msg)
