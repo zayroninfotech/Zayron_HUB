@@ -76,7 +76,7 @@ export default function CreateEmployee() {
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     name: '', email: '', mobile: '', employee_type: '',
-    department: '', designation: '', joining_date: ''
+    joining_date: ''
   })
   const [errors, setErrors] = useState({})
 
@@ -92,8 +92,6 @@ export default function CreateEmployee() {
     else if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Invalid email address'
     if (!form.mobile.trim()) errs.mobile = 'Mobile number is required'
     if (!form.employee_type) errs.employee_type = 'Please select employee type'
-    if (!form.department.trim()) errs.department = 'Department is required'
-    if (!form.designation.trim()) errs.designation = 'Designation is required'
     if (!form.joining_date) errs.joining_date = 'Joining date is required'
     setErrors(errs)
     return Object.keys(errs).length === 0
@@ -201,7 +199,7 @@ export default function CreateEmployee() {
             {/* Personal Section */}
             <SectionHead icon="👤" title="Personal Information" />
             <div style={grid2}>
-              <FloatInput label="Employee Full Name" value={form.name} onChange={e => set('name', e.target.value)} error={errors.name} hint="As per official ID" required />
+              <FloatInput label="Full Name As per official ID" value={form.name} onChange={e => set('name', e.target.value)} error={errors.name} required />
               <FloatInput label="Mobile Number" value={form.mobile} onChange={e => set('mobile', e.target.value)} error={errors.mobile} hint="10-digit number" required />
             </div>
             <FloatInput label="Personal Email Address" type="email" value={form.email} onChange={e => set('email', e.target.value)} error={errors.email} hint="Onboarding link will be sent here" required />
@@ -215,21 +213,7 @@ export default function CreateEmployee() {
                 <option value="contract">Contract Employee</option>
               </FloatInput>
               <FloatInput label="Joining Date" type="date" value={form.joining_date} onChange={e => set('joining_date', e.target.value)} error={errors.joining_date} required />
-              <FloatInput label="Department" value={form.department} onChange={e => set('department', e.target.value)} error={errors.department} list="depts" hint="Select or type" required />
-              <FloatInput label="Designation / Job Title" value={form.designation} onChange={e => set('designation', e.target.value)} error={errors.designation} hint="e.g. Software Engineer" required />
-            </div>
 
-            {/* NDA notice */}
-            <div style={ndaNotice}>
-              <span style={{ fontSize: 16 }}>📄</span>
-              <div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: '#065f46' }}>
-                  {form.employee_type === 'permanent' ? 'Permanent Employee NDA' : 'Contract Employee NDA'} will be assigned
-                </div>
-                <div style={{ fontSize: 12, color: '#059669', marginTop: 2 }}>
-                  The employee will be required to digitally sign the NDA as part of onboarding.
-                </div>
-              </div>
             </div>
 
             <div style={{ display: 'flex', gap: 12, marginTop: 28, paddingTop: 20, borderTop: '1px solid #f1f5f9' }}>
