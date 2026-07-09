@@ -128,11 +128,11 @@ export default function DetailsForm() {
               {/* Personal */}
               <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--gray-700)', marginBottom: 14, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Personal Information</h3>
               <div className="form-grid">
+                <FormGroup errors={errors} label="Father's Name" name="father_name" required>
+                  <input className="form-control" value={form.father_name} onChange={e => set('father_name', e.target.value)} autoComplete="off" spellCheck={false} />
+                </FormGroup>
                 <FormGroup errors={errors} label="Mobile Number" name="mobile_number" required>
                   <input className="form-control" placeholder="10-digit mobile number" value={form.mobile_number} onChange={e => set('mobile_number', e.target.value.replace(/\D/g, ''))} maxLength={10} autoComplete="off" spellCheck={false} />
-                </FormGroup>
-                <FormGroup errors={errors}label="Father's Name" name="father_name" required>
-                  <input className="form-control" value={form.father_name} onChange={e => set('father_name', e.target.value)} autoComplete="off" spellCheck={false} />
                 </FormGroup>
               </div>
 
