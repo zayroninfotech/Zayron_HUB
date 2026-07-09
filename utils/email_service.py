@@ -3,6 +3,7 @@ import os
 from email.mime.image import MIMEImage
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from utils.mail_logger import log_email
 
 
 def _logo_base64():
@@ -96,7 +97,14 @@ Zayron Infotech Pvt. Ltd.
             msg.attach(logo_img)
     except Exception:
         pass
-    msg.send()
+    try:
+        msg.send()
+        log_email(employee.email, subject, 'onboarding', status='sent',
+                  extra={'employee_id': str(employee.id), 'employee_name': employee.name})
+    except Exception as e:
+        log_email(employee.email, subject, 'onboarding', status='failed', error=e,
+                  extra={'employee_id': str(employee.id), 'employee_name': employee.name})
+        raise
 
 
 def send_onboarding_complete_email(details):
@@ -211,8 +219,11 @@ All uploaded documents are attached to this email.
 
     try:
         msg.send()
-    except Exception:
-        pass
+        log_email('info@zayron.in', subject, 'onboarding_complete', status='sent',
+                  extra={'employee_id': str(employee.id), 'employee_name': employee.name})
+    except Exception as e:
+        log_email('info@zayron.in', subject, 'onboarding_complete', status='failed', error=e,
+                  extra={'employee_id': str(employee.id), 'employee_name': employee.name})
 
 
 def send_nda_copy_email(nda_document):
@@ -319,4 +330,11 @@ Zayron Infotech Pvt. Ltd.
         except Exception:
             pass
 
-    msg.send()
+    try:
+        msg.send()
+        log_email(employee.email, subject, 'nda_copy', status='sent',
+                  extra={'employee_id': str(employee.id), 'employee_name': employee.name})
+    except Exception as e:
+        log_email(employee.email, subject, 'nda_copy', status='failed', error=e,
+                  extra={'employee_id': str(employee.id), 'employee_name': employee.name})
+        raise

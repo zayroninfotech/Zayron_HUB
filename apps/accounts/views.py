@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.mail import EmailMultiAlternatives
 
+from utils.mail_logger import log_email
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -275,7 +276,12 @@ Reset My Password
         to=[email],
     )
     msg.attach_alternative(html_body, 'text/html')
-    msg.send(fail_silently=False)
+    try:
+        msg.send(fail_silently=False)
+        log_email(email, subject, 'password_reset', status='sent')
+    except Exception as e:
+        log_email(email, subject, 'password_reset', status='failed', error=e)
+        raise
 
 
 class ForgotPasswordView(APIView):

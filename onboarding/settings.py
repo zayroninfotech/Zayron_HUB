@@ -117,12 +117,14 @@ SIMPLE_JWT = {
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'mail.zayron.in')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'sai.vanteddu@zayron.in')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'hr@zayroninfotech.com')
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'sai.vanteddu@zayron.in')
+EMAIL_FROM_NAME = os.getenv('EMAIL_FROM_NAME', 'Zayron Suite HR')
 
 # Used in email links — set to your server's public URL in production
 BASE_URL = os.getenv('BASE_URL', 'http://localhost:8000')
