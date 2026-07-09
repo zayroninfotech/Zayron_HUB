@@ -313,15 +313,6 @@ export default function Sidebar({ open = true, onClose }) {
       <aside className={`sidebar-root ${open ? 'open' : ''}`}>
         <div className="sb-inner">
 
-          {/* ── Logo ── */}
-          <div className="sb-logo">
-            <div className="sb-logo-box">
-              <img src="/static/img/logo1.png" alt="Zayron" />
-            </div>
-            <div>
-              <div className="sb-logo-name">Zayron Suite</div>
-            </div>
-          </div>
 
 
           {/* ── Search ── */}
