@@ -529,7 +529,6 @@ export default function Login() {
             </div>
             <div className="lp-bot">
               <div className="lp-bot-live"><div className="lp-bot-dot" /><span className="lp-bot-txt">System Online</span></div>
-              <span className="lp-bot-copy">© 2026 Zayron Suite Pvt. Ltd.</span>
             </div>
           </div>
         </div>
