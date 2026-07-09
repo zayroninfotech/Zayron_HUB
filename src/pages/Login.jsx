@@ -550,7 +550,6 @@ export default function Login() {
                 <div className="fc-logo-img"><img src="/static/img/logo1.png" alt="Zayron" /></div>
                 <div className="fc-logo-txt">
                   <div className="name">Zayron Suite</div>
-                  <div className="sub">Developed by Zayron Infotech Pvt. Ltd.</div>
                 </div>
                 <div className="fc-live-badge"><div className="fc-live-dot" />Live</div>
               </div>
