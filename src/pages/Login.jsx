@@ -558,15 +558,6 @@ export default function Login() {
               {/* ── Step 1: Credentials ── */}
               {step === 'credentials' && (
                 <>
-                  <h1 className="fc-title">Welcome back 👋</h1>
-                  <p className="fc-sub">Sign in to your HR portal account to continue</p>
-
-                  <div className="fc-divider">
-                    <div className="fc-divider-line" />
-                    <span className="fc-divider-txt">Sign in with credentials</span>
-                    <div className="fc-divider-line" />
-                  </div>
-
                   <form onSubmit={handleCredentials} autoComplete="off">
                     {/* Hidden dummy fields — prevents Chrome password manager from attaching */}
                     <input type="text" name="fakeuser" style={{display:'none'}} readOnly tabIndex={-1} />
