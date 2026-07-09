@@ -289,22 +289,22 @@ export default function Login() {
 
         /* logo row */
         .fc-logo {
-          display: flex; align-items: center; gap: 12px;
+          display: flex; flex-direction: column; align-items: center; gap: 10px;
           margin-bottom: 26px; padding-bottom: 20px;
-          border-bottom: 1px solid #f0f3fa;
+          border-bottom: 1px solid #f0f3fa; text-align: center;
         }
         .fc-logo-img {
-          width: 48px; height: 48px; border-radius: 13px; flex-shrink: 0;
+          width: 72px; height: 72px; border-radius: 18px; flex-shrink: 0;
           background: linear-gradient(135deg, #eef2ff 0%, #f0f7ff 100%);
           border: 1.5px solid #e0e8ff;
           display: flex; align-items: center; justify-content: center; overflow: hidden;
-          box-shadow: 0 2px 10px rgba(59,130,246,0.12);
+          box-shadow: 0 4px 18px rgba(59,130,246,0.18);
         }
-        .fc-logo-img img { width: 38px; height: 38px; object-fit: contain; }
-        .fc-logo-txt .name { font-size: 16px; font-weight: 800; color: #0d1b4b; letter-spacing: -0.02em; }
+        .fc-logo-img img { width: 58px; height: 58px; object-fit: contain; }
+        .fc-logo-txt .name { font-size: 18px; font-weight: 800; color: #0d1b4b; letter-spacing: -0.02em; }
         .fc-logo-txt .sub  { font-size: 11px; color: #94a3b8; margin-top: 2px; font-weight: 500; }
         .fc-live-badge {
-          margin-left: auto; display: flex; align-items: center; gap: 5px;
+          display: flex; align-items: center; gap: 5px;
           background: linear-gradient(135deg, #f0fdf4, #dcfce7);
           border: 1px solid #86efac;
           border-radius: 20px; padding: 5px 11px;
@@ -548,10 +548,12 @@ export default function Login() {
               {/* Logo */}
               <div className="fc-logo">
                 <div className="fc-logo-img"><img src="/static/img/logo1.png" alt="Zayron" /></div>
-                <div className="fc-logo-txt">
-                  <div className="name">Zayron Suite</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div className="fc-logo-txt">
+                    <div className="name">Zayron Suite</div>
+                  </div>
+                  <div className="fc-live-badge"><div className="fc-live-dot" />Live</div>
                 </div>
-                <div className="fc-live-badge"><div className="fc-live-dot" />Live</div>
               </div>
 
               {/* ── Step 1: Credentials ── */}
