@@ -60,8 +60,7 @@ export default function DetailsForm() {
   const [errors, setErrors] = useState({})
 
   const [form, setForm] = useState({
-    mobile_number: '', father_name: '', date_of_birth: '', gender: '',
-    address: '',
+    mobile_number: '', father_name: '',
     bank_name: '', account_number: '', ifsc_code: '',
     emergency_contact_name: '', emergency_contact: '',
   })
@@ -75,7 +74,7 @@ export default function DetailsForm() {
 
   const validate = () => {
     const errs = {}
-    const required = ['mobile_number', 'father_name', 'date_of_birth', 'gender', 'address', 'bank_name', 'account_number', 'ifsc_code', 'emergency_contact_name', 'emergency_contact']
+    const required = ['mobile_number', 'father_name', 'bank_name', 'account_number', 'ifsc_code', 'emergency_contact_name', 'emergency_contact']
     required.forEach(k => { if (!form[k].trim()) errs[k] = 'This field is required' })
     if (form.ifsc_code && !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(form.ifsc_code.toUpperCase())) errs.ifsc_code = 'Invalid IFSC format'
     setErrors(errs)
@@ -135,21 +134,7 @@ export default function DetailsForm() {
                 <FormGroup errors={errors}label="Father's Name" name="father_name" required>
                   <input className="form-control" value={form.father_name} onChange={e => set('father_name', e.target.value)} autoComplete="off" spellCheck={false} />
                 </FormGroup>
-                <FormGroup errors={errors}label="Date of Birth" name="date_of_birth" required>
-                  <input type="date" className="form-control" value={form.date_of_birth} onChange={e => set('date_of_birth', e.target.value)} />
-                </FormGroup>
-                <FormGroup errors={errors}label="Gender" name="gender" required>
-                  <select className="form-control" value={form.gender} onChange={e => set('gender', e.target.value)}>
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other / Prefer not to say</option>
-                  </select>
-                </FormGroup>
               </div>
-              <FormGroup errors={errors}label="Residential Address" name="address" required>
-                <textarea className="form-control" rows={3} placeholder="Full residential address including city, state, PIN" value={form.address} onChange={e => set('address', e.target.value)} />
-              </FormGroup>
 
               <hr style={{ margin: '20px 0', borderColor: 'var(--gray-100)' }} />
 
