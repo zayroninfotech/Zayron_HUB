@@ -7,10 +7,10 @@
 
 set -e
 APP_NAME="zayron-portal"
-APP_DIR="/var/www/Zayron-Welcome-Portal"
-REPO_URL="https://github.com/zayroninfotech/Zayron-Welcome-Portal.git"
+APP_DIR="/var/www/Zayron_HUB"
+REPO_URL="https://github.com/zayroninfotech/Zayron_HUB.git"
 DOMAIN="187.127.131.93"
-PORT="8000"
+PORT="8081"
 PYTHON="python3"
 
 echo "============================================"
@@ -109,8 +109,8 @@ systemctl restart $APP_NAME
 # ── 9. Nginx config ───────────────────────────────────────────
 cat > /etc/nginx/sites-available/$APP_NAME <<EOF
 server {
-    listen 80;
-    server_name $DOMAIN www.$DOMAIN;
+    listen 8081;
+    server_name $DOMAIN;
 
     client_max_body_size 20M;
 
@@ -144,6 +144,7 @@ nginx -t && systemctl restart nginx
 
 # ── 10. Firewall ─────────────────────────────────────────────
 ufw allow OpenSSH
+ufw allow 8081/tcp
 ufw allow 'Nginx Full'
 ufw --force enable
 
