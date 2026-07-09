@@ -523,20 +523,6 @@ export default function Login() {
           <div className="lp-inner">
             <div className="lp-top">
               <div className="lp-chip"><span className="lp-chip-dot" />Zayron Suite</div>
-              <p className="lp-eyebrow">HR Management System</p>
-              <h1 className="lp-heading">
-                <span className="w">Employee<br /></span>
-                <span className="bl">Onboarding<br /></span>
-                <span className="dm">Made Simple</span>
-              </h1>
-              <p className="lp-desc">
-                A unified platform to onboard employees, manage NDAs, documents, and projects — all in one place.
-              </p>
-              <div className="lp-stats">
-                <div className="lp-stat"><div className="lp-stat-ic b">📋</div><div><div className="lp-stat-v">100%</div><div className="lp-stat-l">Paperless</div></div></div>
-                <div className="lp-stat"><div className="lp-stat-ic p">🔒</div><div><div className="lp-stat-v">Secure</div><div className="lp-stat-l">2FA Protected</div></div></div>
-                <div className="lp-stat"><div className="lp-stat-ic g">⚡</div><div><div className="lp-stat-v">Fast</div><div className="lp-stat-l">Instant Setup</div></div></div>
-              </div>
             </div>
             <div className="lp-bot">
               <div className="lp-bot-live"><div className="lp-bot-dot" /><span className="lp-bot-txt">System Online</span></div>
