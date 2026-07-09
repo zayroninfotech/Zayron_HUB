@@ -73,6 +73,17 @@ class EmployeeDetailsSubmitView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, token):
+        import traceback as tb
+        try:
+            return self._handle_post(request, token)
+        except Exception as e:
+            return Response({
+                'error': 'Unhandled exception',
+                'detail': str(e),
+                'trace': tb.format_exc()
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def _handle_post(self, request, token):
         try:
             employee = Employee.objects.get(onboarding_token=token)
         except Employee.DoesNotExist:
