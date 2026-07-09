@@ -60,7 +60,7 @@ export default function DetailsForm() {
   const [errors, setErrors] = useState({})
 
   const [form, setForm] = useState({
-    mobile_number: '', father_name: '', date_of_birth: '', gender: '', blood_group: '',
+    mobile_number: '', father_name: '', date_of_birth: '', gender: '',
     address: '',
     bank_name: '', account_number: '', ifsc_code: '',
     emergency_contact_name: '', emergency_contact: '',
@@ -75,7 +75,7 @@ export default function DetailsForm() {
 
   const validate = () => {
     const errs = {}
-    const required = ['mobile_number', 'father_name', 'date_of_birth', 'gender', 'blood_group', 'address', 'bank_name', 'account_number', 'ifsc_code', 'emergency_contact_name', 'emergency_contact']
+    const required = ['mobile_number', 'father_name', 'date_of_birth', 'gender', 'address', 'bank_name', 'account_number', 'ifsc_code', 'emergency_contact_name', 'emergency_contact']
     required.forEach(k => { if (!form[k].trim()) errs[k] = 'This field is required' })
     if (form.ifsc_code && !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(form.ifsc_code.toUpperCase())) errs.ifsc_code = 'Invalid IFSC format'
     setErrors(errs)
@@ -144,12 +144,6 @@ export default function DetailsForm() {
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other / Prefer not to say</option>
-                  </select>
-                </FormGroup>
-                <FormGroup errors={errors}label="Blood Group" name="blood_group" required>
-                  <select className="form-control" value={form.blood_group} onChange={e => set('blood_group', e.target.value)}>
-                    <option value="">Select Blood Group</option>
-                    {['A+','A-','B+','B-','AB+','AB-','O+','O-'].map(g => <option key={g} value={g}>{g}</option>)}
                   </select>
                 </FormGroup>
               </div>
