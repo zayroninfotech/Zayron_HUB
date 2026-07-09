@@ -1,13 +1,36 @@
+import re
+import secrets
+import string
+
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.contrib.auth import get_user_model
 
 from apps.employees.models import Employee
 from .models import EmployeeDetails
 from .serializers import EmployeeDetailsSerializer
-from utils.email_service import send_onboarding_complete_email
+from utils.email_service import send_onboarding_complete_email, send_credentials_email
+
+User = get_user_model()
+
+
+def _generate_username(name, email):
+    base = re.sub(r'[^a-z0-9]', '', name.lower().split()[0]) if name else ''
+    base = base or email.split('@')[0]
+    username = base
+    counter = 1
+    while User.objects.filter(username=username).exists():
+        username = f"{base}{counter}"
+        counter += 1
+    return username
+
+
+def _generate_password(length=10):
+    chars = string.ascii_letters + string.digits + '@#$!'
+    return ''.join(secrets.choice(chars) for _ in range(length))
 
 
 class EmployeeDetailsSubmitView(APIView):
@@ -42,10 +65,31 @@ class EmployeeDetailsSubmitView(APIView):
         employee.status = 'completed'
         employee.save()
 
+        # Create portal login account if not already exists
+        portal_user = None
+        raw_password = None
+        if not User.objects.filter(email=employee.email).exists():
+            username = _generate_username(employee.name, employee.email)
+            raw_password = _generate_password()
+            portal_user = User.objects.create_user(
+                username=username,
+                email=employee.email,
+                password=raw_password,
+                first_name=employee.name.split()[0] if employee.name else '',
+                last_name=' '.join(employee.name.split()[1:]) if len(employee.name.split()) > 1 else '',
+                role='employee',
+            )
+
         try:
             send_onboarding_complete_email(details)
         except Exception:
             pass
+
+        if portal_user and raw_password:
+            try:
+                send_credentials_email(employee, portal_user.username, raw_password)
+            except Exception:
+                pass
 
         return Response(EmployeeDetailsSerializer(details, context={'request': request}).data, status=status.HTTP_201_CREATED)
 

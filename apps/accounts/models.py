@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    ROLE_CHOICES = [('superadmin', 'Super Admin'), ('admin', 'Admin')]
+    ROLE_CHOICES = [('superadmin', 'Super Admin'), ('admin', 'Admin'), ('employee', 'Employee')]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='superadmin')
     mobile = models.CharField(max_length=15, blank=True)
 

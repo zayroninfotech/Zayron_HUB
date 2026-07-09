@@ -338,3 +338,114 @@ Zayron Infotech Pvt. Ltd.
         log_email(employee.email, subject, 'nda_copy', status='failed', error=e,
                   extra={'employee_id': str(employee.id), 'employee_name': employee.name})
         raise
+
+
+def send_credentials_email(employee, username, password):
+    subject = 'Your Zayron Suite Portal Login Credentials'
+    portal_url = getattr(settings, 'BASE_URL', 'https://zayrosuite.com')
+
+    text_body = f"""Dear {employee.name},
+
+Your onboarding is complete! Here are your Zayron Suite portal login credentials:
+
+Username: {username}
+Password: {password}
+
+Login at: {portal_url}
+
+Please change your password after first login.
+
+Regards,
+HR Team
+Zayron Infotech Pvt. Ltd.
+"""
+
+    html_body = f"""<!DOCTYPE html>
+<html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:20px;background:#e8edf5;font-family:Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(13,27,75,0.10);">
+
+<tr><td style="background:linear-gradient(135deg,#0d1b4b,#3b82f6);padding:28px 28px 22px;text-align:center;">
+<img src="cid:logo_zayron" alt="Zayron Infotech" style="height:56px;width:auto;display:block;margin:0 auto 10px;" />
+<p style="color:#fff;font-size:20px;font-weight:800;margin:0 0 4px;">Zayron Infotech Pvt. Ltd.</p>
+<p style="color:#bfdbfe;font-size:11px;margin:0;letter-spacing:1.5px;text-transform:uppercase;">HR Portal · Login Credentials</p>
+</td></tr>
+
+<tr><td style="background:#ecfdf5;padding:16px 28px;border-bottom:1px solid #6ee7b7;">
+<p style="color:#065f46;font-size:16px;font-weight:700;margin:0;">🎉 Onboarding Complete — Welcome, {employee.name}!</p>
+<p style="color:#6b7280;font-size:13px;margin:4px 0 0;">Your account has been created. Use the credentials below to log in.</p>
+</td></tr>
+
+<tr><td style="padding:28px 32px;">
+<p style="color:#374151;font-size:14px;line-height:1.7;margin:0 0 20px;">
+Dear <strong>{employee.name}</strong>, your onboarding is now complete. You can now log in to the <strong>Zayron Suite Portal</strong> using the credentials below.
+</p>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:10px;margin-bottom:24px;">
+<tr><td style="padding:18px 24px;">
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+  <td style="padding:8px 0;border-bottom:1px solid #e0f2fe;">
+    <span style="font-size:12px;color:#0369a1;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Username</span><br>
+    <span style="font-size:20px;font-weight:800;color:#0c4a6e;letter-spacing:0.05em;font-family:monospace;">{username}</span>
+  </td>
+</tr>
+<tr>
+  <td style="padding:8px 0;">
+    <span style="font-size:12px;color:#0369a1;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Password</span><br>
+    <span style="font-size:20px;font-weight:800;color:#0c4a6e;letter-spacing:0.05em;font-family:monospace;">{password}</span>
+  </td>
+</tr>
+</table>
+</td></tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+<tr><td align="center">
+<a href="{portal_url}" style="display:inline-block;background:linear-gradient(135deg,#0d1b4b,#2563eb);color:#fff;text-decoration:none;padding:13px 36px;border-radius:10px;font-size:15px;font-weight:700;letter-spacing:0.01em;box-shadow:0 4px 14px rgba(13,27,75,0.25);">
+Login to Portal →
+</a>
+</td></tr>
+</table>
+
+<table width="100%" cellpadding="12" cellspacing="0" style="background:#fef9ec;border:1px solid #fde68a;border-radius:8px;margin-bottom:22px;">
+<tr><td style="font-size:12.5px;color:#92400e;line-height:1.6;">
+⚠️ <strong>Security Notice:</strong> Please change your password after your first login. Do not share your credentials with anyone.
+</td></tr>
+</table>
+
+<p style="color:#374151;font-size:13px;margin:0;">Warm Regards,<br><strong style="color:#0d1b4b;">HR Team</strong><br><span style="color:#2563eb;font-weight:600;">Zayron Infotech Pvt. Ltd.</span></p>
+</td></tr>
+
+<tr><td style="background:#f8faff;padding:14px 32px;text-align:center;border-top:1px solid #e8ecf4;">
+<p style="color:#9ca3af;font-size:11px;margin:0;">© 2026 Zayron Infotech Pvt. Ltd. · HR Portal · This is an automated email.</p>
+</td></tr>
+</table></td></tr></table>
+</body></html>"""
+
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_body,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[employee.email],
+    )
+    msg.mixed_subtype = 'related'
+    msg.attach_alternative(html_body, 'text/html')
+    logo_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'logo_email.png')
+    try:
+        with open(logo_path, 'rb') as f:
+            logo_img = MIMEImage(f.read())
+            logo_img.add_header('Content-ID', '<logo_zayron>')
+            logo_img.add_header('Content-Disposition', 'inline', filename='logo.png')
+            msg.attach(logo_img)
+    except Exception:
+        pass
+    try:
+        msg.send()
+        log_email(employee.email, subject, 'credentials', status='sent',
+                  extra={'employee_id': str(employee.id), 'username': username})
+    except Exception as e:
+        log_email(employee.email, subject, 'credentials', status='failed', error=e,
+                  extra={'employee_id': str(employee.id), 'username': username})
+        raise
