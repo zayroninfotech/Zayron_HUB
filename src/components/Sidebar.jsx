@@ -319,8 +319,8 @@ export default function Sidebar({ open = true, onClose }) {
               <img src="/static/img/logo1.png" alt="Zayron" />
             </div>
             <div>
-              <div className="sb-logo-name">Zayron Infotech</div>
-              <div className="sb-logo-sub">HR Onboarding Portal</div>
+              <div className="sb-logo-name">Zayron Suite</div>
+              <div className="sb-logo-sub">Developed by Zayron Infotech Pvt. Ltd.</div>
             </div>
             <div className="sb-logo-live">
               <div className="sb-logo-live-dot" />Live
@@ -387,7 +387,7 @@ export default function Sidebar({ open = true, onClose }) {
               Sign Out
             </button>
 
-            <div className="sb-version">© 2026 Zayron Infotech Pvt. Ltd.</div>
+            <div className="sb-version">© 2026 Zayron Suite Pvt. Ltd.</div>
           </div>
 
         </div>

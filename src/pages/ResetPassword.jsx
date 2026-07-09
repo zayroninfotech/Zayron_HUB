@@ -98,8 +98,8 @@ export default function ResetPassword() {
             <div className="rp-logo">
               <div className="rp-logo-box"><img src="/static/img/logo1.png" alt="Zayron" /></div>
               <div>
-                <div className="rp-logo-name">Zayron Infotech</div>
-                <div className="rp-logo-sub">HR Onboarding Portal</div>
+                <div className="rp-logo-name">Zayron Suite</div>
+                <div className="rp-logo-sub">Developed by Zayron Infotech Pvt. Ltd.</div>
               </div>
             </div>
 
@@ -162,7 +162,7 @@ export default function ResetPassword() {
               </div>
             )}
           </div>
-          <div className="rp-foot">© 2026 Zayron Infotech Pvt. Ltd. All rights reserved.</div>
+          <div className="rp-foot">© 2026 Zayron Suite Pvt. Ltd. All rights reserved.</div>
         </div>
       </div>
     </>

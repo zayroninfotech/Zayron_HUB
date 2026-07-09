@@ -511,7 +511,7 @@ export default function Login() {
 
           <div className="lp-inner">
             <div className="lp-top">
-              <div className="lp-chip"><span className="lp-chip-dot" />Zayron Infotech</div>
+              <div className="lp-chip"><span className="lp-chip-dot" />Zayron Suite</div>
               <p className="lp-eyebrow">HR Management System</p>
               <h1 className="lp-heading">
                 <span className="w">Employee<br /></span>
@@ -529,7 +529,7 @@ export default function Login() {
             </div>
             <div className="lp-bot">
               <div className="lp-bot-live"><div className="lp-bot-dot" /><span className="lp-bot-txt">System Online</span></div>
-              <span className="lp-bot-copy">© 2026 Zayron Infotech Pvt. Ltd.</span>
+              <span className="lp-bot-copy">© 2026 Zayron Suite Pvt. Ltd.</span>
             </div>
           </div>
         </div>
@@ -549,8 +549,8 @@ export default function Login() {
               <div className="fc-logo">
                 <div className="fc-logo-img"><img src="/static/img/logo1.png" alt="Zayron" /></div>
                 <div className="fc-logo-txt">
-                  <div className="name">Zayron Infotech</div>
-                  <div className="sub">HR Onboarding Portal</div>
+                  <div className="name">Zayron Suite</div>
+                  <div className="sub">Developed by Zayron Infotech Pvt. Ltd.</div>
                 </div>
                 <div className="fc-live-badge"><div className="fc-live-dot" />Live</div>
               </div>
@@ -701,7 +701,7 @@ export default function Login() {
               )}
 
             </div>
-            <div className="fc-foot">© 2026 Zayron Infotech Pvt. Ltd. All rights reserved.</div>
+            <div className="fc-foot">© 2026 Zayron Suite Pvt. Ltd. All rights reserved.</div>
           </div>
         </div>
       </div>
