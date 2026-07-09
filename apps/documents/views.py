@@ -92,15 +92,16 @@ class EmployeeDetailsSubmitView(APIView):
         if not hasattr(employee, 'ndadocument'):
             return Response({'error': 'Please complete NDA first.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        data = request.data.copy()
-        data['employee'] = employee.id
+        request.data._mutable = True
+        request.data['employee'] = employee.id
+        request.data._mutable = False
 
         if hasattr(employee, 'employeedetails'):
             serializer = EmployeeDetailsSerializer(
-                employee.employeedetails, data=data, context={'request': request}, partial=True
+                employee.employeedetails, data=request.data, context={'request': request}, partial=True
             )
         else:
-            serializer = EmployeeDetailsSerializer(data=data, context={'request': request})
+            serializer = EmployeeDetailsSerializer(data=request.data, context={'request': request})
 
         if not serializer.is_valid():
             return Response({'error': str(serializer.errors), 'details': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
