@@ -1,7 +1,6 @@
-import { useRef, useState, useCallback } from 'react'
+import { useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import SignatureCanvas from 'react-signature-canvas'
 import api from '../../api/axios'
 
 const PERMANENT_NDA = `NON-DISCLOSURE AGREEMENT (PERMANENT EMPLOYEE)
@@ -154,38 +153,31 @@ I hereby declare that:
 - I acknowledge my responsibility to protect Company and Client Confidential Information.
 - I understand that violation of this Agreement may result in disciplinary action, termination of engagement, and legal proceedings.`
 
-function Steps({ current }) {
-  const steps = [
-    { label: 'NDA Agreement', num: 1 },
-    { label: 'Personal Details', num: 2 },
-    { label: 'Complete', num: 3 },
-  ]
+function Field({ label, error, children }) {
   return (
-    <div className="steps">
-      {steps.map((s, i) => (
-        <>
-          <div className="step" key={s.num}>
-            <div className={`step-num ${s.num < current ? 'done' : s.num === current ? 'active' : 'pending'}`}>
-              {s.num < current ? '✓' : s.num}
-            </div>
-            <span className={`step-label ${s.num > current ? 'pending' : ''}`}>{s.label}</span>
-          </div>
-          {i < steps.length - 1 && <div className={`step-divider ${s.num < current ? 'done' : ''}`} key={`d${i}`} />}
-        </>
-      ))}
+    <div style={{ marginBottom: 18 }}>
+      <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        {label} <span style={{ color: '#ef4444' }}>*</span>
+      </label>
+      {children}
+      {error && <div style={{ fontSize: 12, color: '#ef4444', marginTop: 4 }}>⚠ {error}</div>}
     </div>
   )
+}
+
+const inp = {
+  width: '100%', padding: '10px 14px', border: '1.5px solid #e2e8f0',
+  borderRadius: 8, fontSize: 14, color: '#1e293b', background: '#f8fafc',
+  outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
 }
 
 export default function NDAForm() {
   const { token } = useParams()
   const navigate = useNavigate()
-  const sigRef = useRef(null)
   const [employee, setEmployee] = useState(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [agreed, setAgreed] = useState(false)
-  const [uploadedSig, setUploadedSig] = useState(null)
   const [form, setForm] = useState({
     full_name: '', address: '', mobile: '', aadhaar_number: '',
     emergency_contact: '', signed_date: new Date().toISOString().split('T')[0]
@@ -232,112 +224,185 @@ export default function NDAForm() {
   }
 
   if (loading) return (
-    <div className="loading-page">
-      <div className="spinner-dark" style={{ width: 40, height: 40, border: '3px solid #e5e7eb', borderRadius: '50%', borderTopColor: '#1e40af', animation: 'spin 0.8s linear infinite' }} />
-      <p>Loading...</p>
-    </div>
-  )
-
-  if (!employee) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1e3a8a, #3b82f6)' }}>
-      <div style={{ background: 'white', borderRadius: 16, padding: 48, textAlign: 'center', maxWidth: 420 }}>
-        <h2 style={{ color: 'var(--danger)' }}>Invalid Link</h2>
-        <p style={{ color: 'var(--gray-500)', marginTop: 8 }}>This onboarding link is invalid or has expired.</p>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#1e3a8a,#4f46e5)' }}>
+      <div style={{ textAlign: 'center', color: 'white' }}>
+        <div style={{ width: 44, height: 44, border: '3px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
+        <p style={{ fontSize: 14, opacity: 0.8 }}>Loading your onboarding...</p>
       </div>
     </div>
   )
 
-  const ndaText = employee.employee_type === 'permanent' ? PERMANENT_NDA : CONTRACT_NDA
+  if (!employee) return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#1e3a8a,#4f46e5)' }}>
+      <div style={{ background: 'white', borderRadius: 16, padding: 48, textAlign: 'center', maxWidth: 420 }}>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>❌</div>
+        <h2 style={{ color: '#ef4444', marginBottom: 8 }}>Invalid Link</h2>
+        <p style={{ color: '#64748b' }}>This onboarding link is invalid or has expired.</p>
+      </div>
+    </div>
+  )
+
+  const isPermanent = employee.employee_type === 'permanent'
+  const ndaText = isPermanent ? PERMANENT_NDA : CONTRACT_NDA
 
   return (
-    <div className="onboarding-page">
-      <div className="onboarding-container">
-        <div className="onboarding-header">
-          <div className="logo">
-            <img src="/static/img/logo1.png" alt="Zayron Infotech" style={{ height: 48, width: 'auto', objectFit: 'contain' }} />
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#312e81 100%)', padding: '0 0 60px' }}>
+
+      {/* Top header */}
+      <div style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', padding: '18px 24px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 14 }}>
+          <img src="/static/img/logo1.png" alt="Zayron" style={{ height: 40, width: 'auto', objectFit: 'contain' }} />
+          <div>
+            <div style={{ color: 'white', fontWeight: 700, fontSize: 16, lineHeight: 1.2 }}>Zayron Infotech Pvt. Ltd.</div>
+            <div style={{ color: 'rgba(255,255,255,0.55)', fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Employee Onboarding Portal</div>
           </div>
-          <h1>Employee Onboarding</h1>
-          <p>Welcome, {employee.name}! Please complete your onboarding.</p>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 16px 0' }}>
+
+        {/* Welcome banner */}
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 100, padding: '6px 16px', marginBottom: 14 }}>
+            <span style={{ fontSize: 14 }}>👋</span>
+            <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13 }}>Welcome, <strong style={{ color: 'white' }}>{employee.name}</strong></span>
+          </div>
+          <h1 style={{ color: 'white', fontSize: 28, fontWeight: 800, margin: '0 0 8px', letterSpacing: '-0.02em' }}>Employee Onboarding</h1>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, margin: 0 }}>Complete the steps below to finish your onboarding with Zayron Infotech.</p>
         </div>
 
-        <Steps current={1} />
+        {/* Steps */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 32, gap: 0 }}>
+          {[{ n: 1, label: 'NDA Agreement', icon: '📋' }, { n: 2, label: 'Personal Details', icon: '👤' }, { n: 3, label: 'Complete', icon: '✅' }].map((s, i) => (
+            <div key={s.n} style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                <div style={{
+                  width: 42, height: 42, borderRadius: '50%',
+                  background: s.n === 1 ? 'white' : 'rgba(255,255,255,0.15)',
+                  border: s.n === 1 ? '2px solid white' : '2px solid rgba(255,255,255,0.25)',
+                  color: s.n === 1 ? '#1e3a8a' : 'rgba(255,255,255,0.5)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: s.n === 1 ? 18 : 15,
+                  fontWeight: 700,
+                  boxShadow: s.n === 1 ? '0 0 0 6px rgba(255,255,255,0.15)' : 'none',
+                }}>{s.n === 1 ? s.icon : s.n}</div>
+                <span style={{ fontSize: 11, fontWeight: s.n === 1 ? 700 : 400, color: s.n === 1 ? 'white' : 'rgba(255,255,255,0.45)', whiteSpace: 'nowrap' }}>{s.label}</span>
+              </div>
+              {i < 2 && <div style={{ width: 80, height: 2, background: 'rgba(255,255,255,0.2)', margin: '0 10px', marginBottom: 18 }} />}
+            </div>
+          ))}
+        </div>
 
-        <div className="onboarding-card">
-          <div className="onboarding-card-header">
-            <h2>Non-Disclosure Agreement</h2>
-            <p>Please read the NDA carefully, fill in your details, and sign below.</p>
-          </div>
+        {/* Employee info cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 24 }}>
+          {[
+            { icon: '👤', label: 'Employee Name', value: employee.name },
+            { icon: '🏷️', label: 'Employment Type', value: isPermanent ? 'Permanent Employee' : 'Contract Employee' },
+            { icon: '📅', label: 'Joining Date', value: employee.joining_date },
+          ].map(c => (
+            <div key={c.label} style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 12, padding: '14px 18px' }}>
+              <div style={{ fontSize: 20, marginBottom: 6 }}>{c.icon}</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>{c.label}</div>
+              <div style={{ fontSize: 14, color: 'white', fontWeight: 600 }}>{c.value}</div>
+            </div>
+          ))}
+        </div>
 
-          <form onSubmit={handleSubmit}>
-            <div className="onboarding-card-body">
-              {/* Employee info summary */}
-              <div className="info-block" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                <div><strong>Name:</strong> {employee.name}</div>
-                <div><strong>Type:</strong> {employee.employee_type === 'permanent' ? 'Permanent' : 'Contract'}</div>
-                <div><strong>Joining Date:</strong> {employee.joining_date}</div>
+        <form onSubmit={handleSubmit}>
+          {/* NDA Document */}
+          <div style={{ background: 'white', borderRadius: 16, overflow: 'hidden', marginBottom: 20, boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
+            {/* NDA header */}
+            <div style={{ background: 'linear-gradient(135deg,#1e3a8a,#3b82f6)', padding: '20px 28px', display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 10, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>📋</div>
+              <div>
+                <div style={{ color: 'white', fontWeight: 700, fontSize: 17 }}>Non-Disclosure Agreement</div>
+                <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 12, marginTop: 2 }}>
+                  {isPermanent ? 'Permanent Employee NDA — 3 years post-employment, 1-year non-compete' : 'Contract Employee NDA — 3 years post-engagement, 6-month non-compete'}
+                </div>
+              </div>
+              <div style={{ marginLeft: 'auto', background: isPermanent ? 'rgba(99,102,241,0.3)' : 'rgba(236,72,153,0.3)', border: `1px solid ${isPermanent ? 'rgba(165,180,252,0.4)' : 'rgba(251,182,206,0.4)'}`, borderRadius: 8, padding: '5px 12px', fontSize: 12, color: 'white', fontWeight: 600 }}>
+                {isPermanent ? '🔵 Permanent' : '🟣 Contract'}
+              </div>
+            </div>
+
+            {/* NDA text */}
+            <div style={{ padding: '0 28px 28px' }}>
+              <div style={{ background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: 10, padding: '20px 22px', maxHeight: 280, overflowY: 'auto', marginTop: 20, marginBottom: 20 }}>
+                <pre style={{ fontFamily: 'inherit', fontSize: 13, lineHeight: 1.8, color: '#334155', whiteSpace: 'pre-wrap', margin: 0 }}>{ndaText}</pre>
               </div>
 
-              {/* NDA Type */}
-              <div className="nda-type-badge">
-                📋 {employee.employee_type === 'permanent' ? 'Permanent Employee' : 'Contract Employee'} NDA
+              {/* Info notice */}
+              <div style={{ background: '#fef9ec', border: '1px solid #fde68a', borderRadius: 10, padding: '12px 16px', display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 24 }}>
+                <span style={{ fontSize: 18 }}>⚠️</span>
+                <div style={{ fontSize: 13, color: '#92400e', lineHeight: 1.6 }}>
+                  Please read the entire NDA carefully before filling in your details and submitting. This is a legally binding document.
+                </div>
               </div>
-
-              {/* NDA Content */}
-              <div className="nda-content">{ndaText}</div>
 
               {/* Form fields */}
-              <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 16, color: 'var(--gray-800)' }}>Your Information</h3>
+              <div style={{ borderTop: '2px solid #f1f5f9', paddingTop: 24 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+                  <span style={{ fontSize: 16 }}>📝</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: '#1e293b' }}>Your Information</span>
+                  <span style={{ fontSize: 12, color: '#94a3b8', marginLeft: 4 }}>— Fill in the details below to sign the NDA</span>
+                </div>
 
-              <div className="form-grid">
-                <div className="form-group">
-                  <label className="form-label">Full Name <span className="required">*</span></label>
-                  <input className="form-control" value={form.full_name} onChange={e => set('full_name', e.target.value)} autoComplete="off" spellCheck={false} />
-                  {errors.full_name && <div className="form-error">{errors.full_name}</div>}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 24px' }}>
+                  <Field label="Full Name" error={errors.full_name}>
+                    <input style={inp} value={form.full_name} onChange={e => set('full_name', e.target.value)} autoComplete="off" />
+                  </Field>
+                  <Field label="Mobile Number" error={errors.mobile}>
+                    <input style={inp} value={form.mobile} onChange={e => set('mobile', e.target.value)} autoComplete="off" />
+                  </Field>
+                  <Field label="Aadhaar Number" error={errors.aadhaar_number}>
+                    <input style={inp} placeholder="12-digit Aadhaar number" maxLength={12} value={form.aadhaar_number} onChange={e => set('aadhaar_number', e.target.value.replace(/\D/g, ''))} autoComplete="off" />
+                  </Field>
+                  <Field label="Emergency Contact Number" error={errors.emergency_contact}>
+                    <input style={inp} placeholder="10-digit mobile number" value={form.emergency_contact} onChange={e => set('emergency_contact', e.target.value)} autoComplete="off" />
+                  </Field>
+                  <Field label="Date of Signing" error={errors.signed_date}>
+                    <input type="date" style={inp} value={form.signed_date} onChange={e => set('signed_date', e.target.value)} />
+                  </Field>
                 </div>
-                <div className="form-group">
-                  <label className="form-label">Mobile Number <span className="required">*</span></label>
-                  <input className="form-control" value={form.mobile} onChange={e => set('mobile', e.target.value)} autoComplete="off" spellCheck={false} />
-                  {errors.mobile && <div className="form-error">{errors.mobile}</div>}
+
+                <Field label="Residential Address" error={errors.address}>
+                  <textarea style={{ ...inp, height: 90, resize: 'vertical' }} placeholder="Full residential address (Door no., Street, City, State, PIN)" value={form.address} onChange={e => set('address', e.target.value)} />
+                </Field>
+
+                {/* Agreement */}
+                <div style={{ background: '#f0fdf4', border: '1.5px solid #bbf7d0', borderRadius: 10, padding: '16px 18px', marginBottom: 8 }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer' }}>
+                    <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setErrors(er => ({ ...er, agreed: '' })) }}
+                      style={{ width: 18, height: 18, marginTop: 2, cursor: 'pointer', accentColor: '#16a34a' }} />
+                    <span style={{ fontSize: 14, color: '#166534', lineHeight: 1.7 }}>
+                      I have read, understood, and agree to be <strong>legally bound</strong> by the terms and conditions of this Non-Disclosure Agreement with <strong>Zayron Infotech Pvt. Ltd.</strong>
+                    </span>
+                  </label>
                 </div>
-                <div className="form-group">
-                  <label className="form-label">Aadhaar Number <span className="required">*</span></label>
-                  <input className="form-control" placeholder="12-digit Aadhaar number" maxLength={12} value={form.aadhaar_number} onChange={e => set('aadhaar_number', e.target.value.replace(/\D/g, ''))} autoComplete="off" spellCheck={false} />
-                  {errors.aadhaar_number && <div className="form-error">{errors.aadhaar_number}</div>}
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Emergency Contact <span className="required">*</span></label>
-                  <input className="form-control" placeholder="Emergency contact number" value={form.emergency_contact} onChange={e => set('emergency_contact', e.target.value)} autoComplete="off" spellCheck={false} />
-                  {errors.emergency_contact && <div className="form-error">{errors.emergency_contact}</div>}
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Date <span className="required">*</span></label>
-                  <input type="date" className="form-control" value={form.signed_date} onChange={e => set('signed_date', e.target.value)} />
-                </div>
+                {errors.agreed && <div style={{ fontSize: 12, color: '#ef4444', marginBottom: 16 }}>⚠ {errors.agreed}</div>}
               </div>
-
-              <div className="form-group">
-                <label className="form-label">Address <span className="required">*</span></label>
-                <textarea className="form-control" rows={3} placeholder="Full residential address" value={form.address} onChange={e => set('address', e.target.value)} />
-                {errors.address && <div className="form-error">{errors.address}</div>}
-              </div>
-
-              {/* Agreement checkbox */}
-              <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer', marginBottom: 20 }}>
-                <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setErrors(er => ({ ...er, agreed: '' })) }} style={{ marginTop: 3, width: 16, height: 16, cursor: 'pointer' }} />
-                <span style={{ fontSize: 14, color: 'var(--gray-700)', lineHeight: 1.6 }}>
-                  I have read, understood, and agree to be legally bound by the terms and conditions of this Non-Disclosure Agreement with Zayron Infotech Pvt. Ltd.
-                </span>
-              </label>
-              {errors.agreed && <div className="form-error" style={{ marginTop: -14, marginBottom: 14 }}>{errors.agreed}</div>}
-
             </div>
 
-            <div className="onboarding-card-footer">
-              <button type="submit" className="btn btn-primary btn-lg" disabled={submitting}>
-                {submitting ? <><span className="spinner" /> Submitting NDA...</> : '✓ Submit NDA & Continue'}
+            {/* Footer / submit */}
+            <div style={{ borderTop: '1px solid #f1f5f9', background: '#fafafa', padding: '18px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ fontSize: 12, color: '#94a3b8' }}>🔒 This document is encrypted and securely stored.</div>
+              <button type="submit" disabled={submitting} style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '12px 28px', borderRadius: 10, border: 'none', cursor: submitting ? 'not-allowed' : 'pointer',
+                background: submitting ? '#94a3b8' : 'linear-gradient(135deg,#1e3a8a,#3b82f6)',
+                color: 'white', fontSize: 15, fontWeight: 700,
+                boxShadow: submitting ? 'none' : '0 4px 14px rgba(30,58,138,0.4)',
+              }}>
+                {submitting
+                  ? <><span style={{ width: 18, height: 18, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: 'white', borderRadius: '50%', display: 'inline-block', animation: 'spin 0.8s linear infinite' }} /> Submitting...</>
+                  : <>✓ Submit NDA &amp; Continue</>}
               </button>
             </div>
-          </form>
+          </div>
+        </form>
+
+        <div style={{ textAlign: 'center', fontSize: 12, color: 'rgba(255,255,255,0.35)', marginTop: 8 }}>
+          © 2026 Zayron Infotech Pvt. Ltd. · All rights reserved.
         </div>
       </div>
     </div>
