@@ -72,11 +72,9 @@ class EmployeeDetailsSubmitView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, token):
-        import traceback as _tb
         try:
-          try:
             employee = Employee.objects.get(onboarding_token=token)
-          except Employee.DoesNotExist:
+        except Employee.DoesNotExist:
             return Response({'error': 'Invalid onboarding link.'}, status=status.HTTP_404_NOT_FOUND)
 
         if not hasattr(employee, 'ndadocument'):
@@ -85,7 +83,6 @@ class EmployeeDetailsSubmitView(APIView):
         data = request.data.copy()
         data['employee'] = employee.id
 
-        # Update if already exists, otherwise create
         if hasattr(employee, 'employeedetails'):
             serializer = EmployeeDetailsSerializer(
                 employee.employeedetails, data=data, context={'request': request}, partial=True
@@ -101,7 +98,6 @@ class EmployeeDetailsSubmitView(APIView):
         employee.status = 'completed'
         employee.save()
 
-        # Create portal login account if not already exists
         portal_user = None
         raw_password = None
         if not User.objects.filter(email=employee.email).exists():
@@ -115,7 +111,6 @@ class EmployeeDetailsSubmitView(APIView):
                 last_name=' '.join(employee.name.split()[1:]) if len(employee.name.split()) > 1 else '',
                 role='employee',
             )
-            # Also insert into MongoDB so the login system (which reads Mongo) works
             try:
                 _insert_mongo_user(username, employee.email, raw_password, employee)
             except Exception:
@@ -132,9 +127,7 @@ class EmployeeDetailsSubmitView(APIView):
             except Exception:
                 pass
 
-          return Response(EmployeeDetailsSerializer(details, context={'request': request}).data, status=status.HTTP_201_CREATED)
-        except Exception as _e:
-            return Response({'error': str(_e), 'trace': _tb.format_exc()}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(EmployeeDetailsSerializer(details, context={'request': request}).data, status=status.HTTP_201_CREATED)
 
 
 class EmployeeDetailsView(APIView):
