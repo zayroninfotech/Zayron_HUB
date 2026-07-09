@@ -466,9 +466,6 @@ export default function Login() {
                   A unified platform to onboard employees, manage NDAs, documents, and projects — all in one place.
                 </p>
               </div>
-              <div className="lp-img-wrap">
-                <img src="/static/img/hero.png" alt="" className="lp-hero" />
-              </div>
             </div>
 
             {/* bottom bar */}
