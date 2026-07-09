@@ -502,19 +502,6 @@ export default function Login() {
             <div className="lp-ring lp-ring3" />
           </div>
 
-          {/* floating accent cards */}
-          <div className="lp-card lp-card1">
-            <div className="lp-card-icon blue">📋</div>
-            <div><div className="lp-card-txt1">100%</div><div className="lp-card-txt2">Paperless HR</div></div>
-          </div>
-          <div className="lp-card lp-card2">
-            <div className="lp-card-icon purple">🔒</div>
-            <div><div className="lp-card-txt1">2FA</div><div className="lp-card-txt2">Secured</div></div>
-          </div>
-          <div className="lp-card lp-card3">
-            <div className="lp-card-icon cyan">⚡</div>
-            <div><div className="lp-card-txt1">Fast</div><div className="lp-card-txt2">Onboarding</div></div>
-          </div>
 
           <div className="lp-dots lp-dots1" />
           <div className="lp-dots lp-dots2" />
