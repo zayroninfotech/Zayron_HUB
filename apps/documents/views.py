@@ -72,9 +72,11 @@ class EmployeeDetailsSubmitView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, token):
+        import traceback as _tb
         try:
+          try:
             employee = Employee.objects.get(onboarding_token=token)
-        except Employee.DoesNotExist:
+          except Employee.DoesNotExist:
             return Response({'error': 'Invalid onboarding link.'}, status=status.HTTP_404_NOT_FOUND)
 
         if not hasattr(employee, 'ndadocument'):
@@ -130,7 +132,9 @@ class EmployeeDetailsSubmitView(APIView):
             except Exception:
                 pass
 
-        return Response(EmployeeDetailsSerializer(details, context={'request': request}).data, status=status.HTTP_201_CREATED)
+          return Response(EmployeeDetailsSerializer(details, context={'request': request}).data, status=status.HTTP_201_CREATED)
+        except Exception as _e:
+            return Response({'error': str(_e), 'trace': _tb.format_exc()}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class EmployeeDetailsView(APIView):
