@@ -498,9 +498,6 @@ export default function Login() {
             <div className="lp-bg-grad" />
             <div className="lp-bg-grid" />
             <div className="lp-bg-noise" />
-            <div className="lp-ring lp-ring1" />
-            <div className="lp-ring lp-ring2" />
-            <div className="lp-ring lp-ring3" />
           </div>
 
 
