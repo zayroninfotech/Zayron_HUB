@@ -320,10 +320,6 @@ export default function Sidebar({ open = true, onClose }) {
             </div>
             <div>
               <div className="sb-logo-name">Zayron Suite</div>
-              <div className="sb-logo-sub">Developed by Zayron Infotech Pvt. Ltd.</div>
-            </div>
-            <div className="sb-logo-live">
-              <div className="sb-logo-live-dot" />Live
             </div>
           </div>
 
