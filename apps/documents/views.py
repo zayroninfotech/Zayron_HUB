@@ -99,46 +99,53 @@ class EmployeeDetailsSubmitView(APIView):
         employee.status = 'completed'
         employee.save()
 
-        portal_user = None
-        raw_password = None
-        db = _mongo_db()
-        django_user = User.objects.filter(email=employee.email).first()
-        mongo_user_exists = bool(db.users.find_one({'email': employee.email}))
+        # Run user creation + all emails in background — return response instantly
+        emp_email  = employee.email
+        emp_name   = employee.name
+        emp_type   = employee.employee_type
 
-        if not django_user:
-            # Brand new user — create in both Django and MongoDB
-            username = _generate_username(employee.name, employee.email)
-            raw_password = _generate_password()
-            portal_user = User.objects.create_user(
-                username=username,
-                email=employee.email,
-                password=raw_password,
-                first_name=employee.name.split()[0] if employee.name else '',
-                last_name=' '.join(employee.name.split()[1:]) if len(employee.name.split()) > 1 else '',
-                role='employee',
-            )
-            _insert_mongo_user(username, employee.email, raw_password, employee)
-        elif not mongo_user_exists:
-            # Django user exists (from failed previous attempt) but MongoDB missing — insert it
-            raw_password = _generate_password()
-            portal_user = django_user
-            portal_user.set_password(raw_password)
-            portal_user.save()
-            _insert_mongo_user(django_user.username, employee.email, raw_password, employee)
-
-        # Send all emails in background so response returns immediately
-        def _send_emails():
+        def _background():
             try:
                 send_onboarding_complete_email(details)
             except Exception:
                 pass
-            if portal_user and raw_password:
-                try:
-                    send_credentials_email(employee, portal_user.username, raw_password)
-                except Exception:
-                    pass
 
-        threading.Thread(target=_send_emails, daemon=True).start()
+            try:
+                db = _mongo_db()
+                django_user = User.objects.filter(email=emp_email).first()
+                mongo_exists = bool(db.users.find_one({'email': emp_email}))
+
+                portal_user  = None
+                raw_password = None
+
+                if not django_user:
+                    username     = _generate_username(emp_name, emp_email)
+                    raw_password = _generate_password()
+                    portal_user  = User.objects.create_user(
+                        username=username, email=emp_email, password=raw_password,
+                        first_name=emp_name.split()[0] if emp_name else '',
+                        last_name=' '.join(emp_name.split()[1:]) if len(emp_name.split()) > 1 else '',
+                        role='employee',
+                    )
+                    _insert_mongo_user(username, emp_email, raw_password,
+                                       type('E', (), {'name': emp_name, 'employee_type': emp_type})())
+                elif not mongo_exists:
+                    raw_password = _generate_password()
+                    portal_user  = django_user
+                    portal_user.set_password(raw_password)
+                    portal_user.save()
+                    _insert_mongo_user(django_user.username, emp_email, raw_password,
+                                       type('E', (), {'name': emp_name, 'employee_type': emp_type})())
+
+                if portal_user and raw_password:
+                    send_credentials_email(
+                        type('E', (), {'name': emp_name, 'email': emp_email, 'id': employee.id})(),
+                        portal_user.username, raw_password
+                    )
+            except Exception:
+                pass
+
+        threading.Thread(target=_background, daemon=True).start()
 
         return Response(EmployeeDetailsSerializer(details, context={'request': request}).data, status=status.HTTP_201_CREATED)
 
