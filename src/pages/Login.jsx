@@ -570,10 +570,7 @@ export default function Login() {
                       </div>
                     </div>
                     <div className="fg">
-                      <label className="fl">
-                        <span>Password</span>
-                        <button type="button" className="forgot-link" onClick={() => setStep('forgot')}>Forgot password?</button>
-                      </label>
+                      <label className="fl"><span>Password</span></label>
                       <div className="iw">
                         <span className="ii"><IconLock /></span>
                         <input type="text" className="fi" placeholder="Enter your password"
@@ -589,6 +586,9 @@ export default function Login() {
                       {loading ? <><span className="spin" />Verifying...</> : <>Sign In &rarr;</>}
                     </button>
                   </form>
+                  <div style={{ textAlign: 'center', marginTop: '14px' }}>
+                    <button type="button" className="forgot-link" onClick={() => setStep('forgot')}>Forgot password?</button>
+                  </div>
 
                 </>
               )}
