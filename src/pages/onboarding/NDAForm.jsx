@@ -249,12 +249,12 @@ export default function NDAForm() {
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#312e81 100%)', padding: '0 0 60px' }}>
 
       {/* Top header */}
-      <div style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', padding: '18px 24px' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 14 }}>
-          <img src="/static/img/logo1.png" alt="Zayron" style={{ height: 40, width: 40, objectFit: 'contain', background: 'white', borderRadius: 10, padding: 4 }} />
-          <div>
-            <div style={{ color: 'white', fontWeight: 700, fontSize: 16, lineHeight: 1.2 }}>Zayron Infotech Pvt. Ltd.</div>
-            <div style={{ color: 'rgba(255,255,255,0.55)', fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Employee Onboarding Portal</div>
+      <div style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', padding: '14px 24px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+          <img src="/static/img/logo1.png" alt="Zayron" style={{ height: 36, width: 36, objectFit: 'contain', background: 'white', borderRadius: 8, padding: 3 }} />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ color: 'white', fontWeight: 700, fontSize: 15, lineHeight: 1.2 }}>Zayron Infotech Pvt. Ltd.</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: 2 }}>Employee Onboarding Portal</span>
           </div>
         </div>
       </div>
