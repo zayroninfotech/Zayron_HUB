@@ -77,164 +77,110 @@ export default function Login() {
 
         /* ═══════════════ LEFT PANEL ═══════════════ */
         .lp-left {
-          width: 46%; position: relative; overflow: hidden; flex-shrink: 0;
-          background: #050d24;
+          width: 52%; position: relative; overflow: hidden; flex-shrink: 0;
+          background: #060e26;
           display: flex; flex-direction: column;
-          padding: 40px 48px;
+          padding: 36px 44px;
         }
 
-        /* layered background */
-        .lp-bg {
-          position: absolute; inset: 0; overflow: hidden;
-        }
+        /* background layers */
+        .lp-bg { position: absolute; inset: 0; overflow: hidden; }
         .lp-bg-grad {
           position: absolute; inset: 0;
           background:
-            radial-gradient(ellipse 80% 60% at 20% 50%, rgba(37,99,235,0.22) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 80% at 80% 20%, rgba(99,102,241,0.15) 0%, transparent 55%),
-            radial-gradient(ellipse 50% 50% at 60% 80%, rgba(14,165,233,0.10) 0%, transparent 55%),
-            linear-gradient(160deg, #080f28 0%, #0a1535 40%, #060d20 100%);
+            radial-gradient(ellipse 70% 60% at 15% 40%, rgba(37,99,235,0.28) 0%, transparent 60%),
+            radial-gradient(ellipse 50% 70% at 85% 15%, rgba(99,102,241,0.18) 0%, transparent 55%),
+            radial-gradient(ellipse 60% 50% at 70% 85%, rgba(14,165,233,0.12) 0%, transparent 55%),
+            linear-gradient(155deg, #070e28 0%, #0b1638 45%, #060c1e 100%);
         }
         .lp-bg-grid {
           position: absolute; inset: 0;
           background-image:
-            linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-          background-size: 44px 44px;
+            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+          background-size: 40px 40px;
         }
         .lp-bg-noise {
-          position: absolute; inset: 0; opacity: 0.03;
+          position: absolute; inset: 0; opacity: 0.025;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
         }
 
-        /* floating glow rings */
-        .lp-ring {
-          position: absolute; border-radius: 50%;
-          border: 1px solid rgba(59,130,246,0.12);
-          animation: ringpulse 6s ease-in-out infinite;
-        }
-        .lp-ring1 { width: 420px; height: 420px; bottom: -140px; right: -140px; animation-delay: 0s; }
-        .lp-ring2 { width: 280px; height: 280px; bottom: -60px; right: -60px; border-color: rgba(99,102,241,0.18); animation-delay: 1.5s; }
-        .lp-ring3 { width: 200px; height: 200px; top: -60px; left: -60px; animation-delay: 3s; }
-        @keyframes ringpulse { 0%,100%{opacity:0.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.04)} }
-
-        /* floating cards */
-        .lp-card {
-          position: absolute;
-          background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
-          border: 1px solid rgba(255,255,255,0.10);
-          border-radius: 16px;
-          backdrop-filter: blur(8px);
-          box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        .lp-card1 {
-          width: 180px; height: 90px;
-          top: 16%; right: 7%; transform: rotate(5deg);
-          display: flex; align-items: center; justify-content: center; gap: 12px; padding: 14px;
-        }
-        .lp-card2 {
-          width: 130px; height: 64px;
-          top: 34%; right: 16%; transform: rotate(-3deg);
-          display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px;
-        }
-        .lp-card3 {
-          width: 150px; height: 72px;
-          bottom: 26%; left: 5%; transform: rotate(2deg);
-          display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px;
-        }
-        .lp-card-icon {
-          width: 36px; height: 36px; border-radius: 10px;
-          display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
-        }
-        .lp-card-icon.blue   { background: rgba(59,130,246,0.25); border: 1px solid rgba(59,130,246,0.3); }
-        .lp-card-icon.purple { background: rgba(139,92,246,0.25); border: 1px solid rgba(139,92,246,0.3); }
-        .lp-card-icon.cyan   { background: rgba(6,182,212,0.25); border: 1px solid rgba(6,182,212,0.3); }
-        .lp-card-txt1 { font-size: 14px; font-weight: 800; color: #fff; }
-        .lp-card-txt2 { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 1px; }
-
-        /* dot grid decoration */
-        .lp-dots {
-          position: absolute; pointer-events: none;
-          background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
-          background-size: 18px 18px;
-        }
-        .lp-dots1 { width: 140px; height: 140px; top: 48%; left: 52%; opacity: 0.4; }
-        .lp-dots2 { width: 100px; height: 100px; top: 6%; right: 30%; opacity: 0.25; }
-
-        /* hero image */
-        .lp-hero {
-          width: 100%; max-width: 320px;
-          display: block;
-          filter: drop-shadow(0 24px 48px rgba(0,0,0,0.5));
-          animation: herofloat 5s ease-in-out infinite;
-        }
+        @keyframes chipblink { 0%,100%{opacity:1} 50%{opacity:0.3} }
         @keyframes herofloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
 
-        /* inner content */
-        .lp-inner { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; }
-        .lp-top   { flex: 1; display: flex; gap: 16px; align-items: center; }
-        .lp-text  { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .lp-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
+        /* inner layout */
+        .lp-inner { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; gap: 0; }
+
+        /* top row: chip */
+        .lp-topbar { display: flex; align-items: center; margin-bottom: 28px; }
 
         .lp-chip {
           display: inline-flex; align-items: center; gap: 8px;
-          background: rgba(59,130,246,0.12);
-          border: 1px solid rgba(59,130,246,0.25);
+          background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.28);
           border-radius: 40px; padding: 7px 18px;
           font-size: 10px; color: #93c5fd; font-weight: 700;
-          letter-spacing: 0.12em; text-transform: uppercase;
-          width: fit-content; margin-bottom: 30px;
+          letter-spacing: 0.12em; text-transform: uppercase; width: fit-content;
         }
         .lp-chip-dot {
-          width: 7px; height: 7px; border-radius: 50%;
-          background: #60a5fa;
+          width: 7px; height: 7px; border-radius: 50%; background: #60a5fa;
           box-shadow: 0 0 0 3px rgba(96,165,250,0.25);
           animation: chipblink 2s ease-in-out infinite;
         }
-        @keyframes chipblink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        /* middle: text + hero side by side */
+        .lp-mid { flex: 1; display: flex; align-items: center; gap: 20px; min-height: 0; }
+        .lp-text { flex: 0 0 52%; display: flex; flex-direction: column; justify-content: center; }
+        .lp-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; overflow: visible; }
 
         .lp-eyebrow {
-          font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.28);
-          letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 14px;
+          font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.32);
+          letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 12px;
         }
-
         .lp-heading {
-          font-size: 40px; font-weight: 900; line-height: 1.08;
-          letter-spacing: -0.035em; margin-bottom: 18px;
+          font-size: 32px; font-weight: 900; line-height: 1.12;
+          letter-spacing: -0.03em; margin-bottom: 14px;
         }
         .lp-heading .w  { color: #ffffff; }
         .lp-heading .bl { color: #60a5fa; }
-        .lp-heading .dm { color: rgba(255,255,255,0.45); font-weight: 700; }
-
+        .lp-heading .dm { color: rgba(255,255,255,0.42); font-weight: 700; }
         .lp-desc {
-          font-size: 13.5px; color: rgba(255,255,255,0.38);
-          line-height: 1.78; max-width: 310px; margin-bottom: 36px;
+          font-size: 12.5px; color: rgba(255,255,255,0.36);
+          line-height: 1.75; margin-bottom: 0;
         }
 
-        /* stat pills */
-        .lp-stats { display: flex; gap: 10px; flex-wrap: wrap; }
-        .lp-stat {
-          display: flex; align-items: center; gap: 11px;
-          background: rgba(255,255,255,0.045);
-          border: 1px solid rgba(255,255,255,0.09);
-          border-radius: 14px; padding: 11px 16px;
-          transition: background 0.2s;
+        /* hero image */
+        .lp-hero {
+          width: 100%; max-width: 290px;
+          filter: drop-shadow(0 20px 40px rgba(0,0,0,0.55));
+          animation: herofloat 5s ease-in-out infinite;
         }
-        .lp-stat:hover { background: rgba(255,255,255,0.075); }
+
+        /* bottom stats row */
+        .lp-stats {
+          display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+          margin-top: 24px; padding-top: 20px;
+          border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .lp-stat {
+          display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+          background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 14px; padding: 14px 12px; transition: background 0.2s;
+        }
+        .lp-stat:hover { background: rgba(255,255,255,0.07); }
         .lp-stat-ic {
-          width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
-          display: flex; align-items: center; justify-content: center; font-size: 16px;
+          width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+          display: flex; align-items: center; justify-content: center; font-size: 15px;
         }
         .lp-stat-ic.b { background: rgba(59,130,246,0.22); }
         .lp-stat-ic.p { background: rgba(139,92,246,0.22); }
         .lp-stat-ic.g { background: rgba(16,185,129,0.22); }
-        .lp-stat-v { font-size: 16px; font-weight: 800; color: #fff; line-height: 1.1; }
-        .lp-stat-l { font-size: 10px; color: rgba(255,255,255,0.38); margin-top: 2px; letter-spacing: 0.02em; }
+        .lp-stat-ic.o { background: rgba(245,158,11,0.22); }
+        .lp-stat-v { font-size: 14px; font-weight: 800; color: #fff; line-height: 1.1; }
+        .lp-stat-l { font-size: 10px; color: rgba(255,255,255,0.36); letter-spacing: 0.02em; }
 
         /* bottom bar */
         .lp-bot {
-          display: flex; align-items: center; justify-content: space-between;
-          padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07);
+          display: flex; align-items: center; margin-top: 16px;
         }
         .lp-bot-live { display: flex; align-items: center; gap: 8px; }
         .lp-bot-dot {
@@ -505,9 +451,14 @@ export default function Login() {
           <div className="lp-dots lp-dots2" />
 
           <div className="lp-inner">
-            <div className="lp-top">
+            {/* top chip */}
+            <div className="lp-topbar">
+              <div className="lp-chip"><span className="lp-chip-dot" />Zayron Suite</div>
+            </div>
+
+            {/* middle: text left, image right */}
+            <div className="lp-mid">
               <div className="lp-text">
-                <div className="lp-chip"><span className="lp-chip-dot" />Zayron Suite</div>
                 <p className="lp-eyebrow">HR Management System</p>
                 <h1 className="lp-heading">
                   <span className="w">Employee<br /></span>
@@ -517,17 +468,21 @@ export default function Login() {
                 <p className="lp-desc">
                   A unified platform to onboard employees, manage NDAs, documents, and projects — all in one place.
                 </p>
-                <div className="lp-stats">
-                  <div className="lp-stat"><div className="lp-stat-ic b">👥</div><div><div className="lp-stat-v">Fast</div><div className="lp-stat-l">Onboarding</div></div></div>
-                  <div className="lp-stat"><div className="lp-stat-ic p">📋</div><div><div className="lp-stat-v">100%</div><div className="lp-stat-l">Paperless</div></div></div>
-                  <div className="lp-stat"><div className="lp-stat-ic g">🔒</div><div><div className="lp-stat-v">Secure</div><div className="lp-stat-l">2FA Protected</div></div></div>
-                  <div className="lp-stat"><div className="lp-stat-ic b">📊</div><div><div className="lp-stat-v">Smart</div><div className="lp-stat-l">Analytics</div></div></div>
-                </div>
               </div>
               <div className="lp-img-wrap">
                 <img src="/static/img/hero.png" alt="" className="lp-hero" />
               </div>
             </div>
+
+            {/* stats row */}
+            <div className="lp-stats">
+              <div className="lp-stat"><div className="lp-stat-ic b">👥</div><div className="lp-stat-v">Fast</div><div className="lp-stat-l">Onboarding</div></div>
+              <div className="lp-stat"><div className="lp-stat-ic p">📋</div><div className="lp-stat-v">100%</div><div className="lp-stat-l">Paperless</div></div>
+              <div className="lp-stat"><div className="lp-stat-ic g">🔒</div><div className="lp-stat-v">Secure</div><div className="lp-stat-l">2FA Protected</div></div>
+              <div className="lp-stat"><div className="lp-stat-ic o">📊</div><div className="lp-stat-v">Smart</div><div className="lp-stat-l">Analytics</div></div>
+            </div>
+
+            {/* bottom bar */}
             <div className="lp-bot">
               <div className="lp-bot-live"><div className="lp-bot-dot" /><span className="lp-bot-txt">System Online</span></div>
             </div>
