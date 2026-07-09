@@ -163,18 +163,18 @@ export default function Login() {
 
         /* hero image */
         .lp-hero {
-          width: 85%; max-width: 380px;
-          margin: 24px auto 0;
+          width: 100%; max-width: 320px;
           display: block;
           filter: drop-shadow(0 24px 48px rgba(0,0,0,0.5));
           animation: herofloat 5s ease-in-out infinite;
-          position: relative; z-index: 1;
         }
         @keyframes herofloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
 
         /* inner content */
         .lp-inner { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; }
-        .lp-top   { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .lp-top   { flex: 1; display: flex; gap: 16px; align-items: center; }
+        .lp-text  { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .lp-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
 
         .lp-chip {
           display: inline-flex; align-items: center; gap: 8px;
@@ -506,8 +506,27 @@ export default function Login() {
 
           <div className="lp-inner">
             <div className="lp-top">
-              <div className="lp-chip"><span className="lp-chip-dot" />Zayron Suite</div>
-              <img src="/static/img/hero.png" alt="" className="lp-hero" />
+              <div className="lp-text">
+                <div className="lp-chip"><span className="lp-chip-dot" />Zayron Suite</div>
+                <p className="lp-eyebrow">HR Management System</p>
+                <h1 className="lp-heading">
+                  <span className="w">Employee<br /></span>
+                  <span className="bl">Onboarding<br /></span>
+                  <span className="dm">Made Simple</span>
+                </h1>
+                <p className="lp-desc">
+                  A unified platform to onboard employees, manage NDAs, documents, and projects — all in one place.
+                </p>
+                <div className="lp-stats">
+                  <div className="lp-stat"><div className="lp-stat-ic b">👥</div><div><div className="lp-stat-v">Fast</div><div className="lp-stat-l">Onboarding</div></div></div>
+                  <div className="lp-stat"><div className="lp-stat-ic p">📋</div><div><div className="lp-stat-v">100%</div><div className="lp-stat-l">Paperless</div></div></div>
+                  <div className="lp-stat"><div className="lp-stat-ic g">🔒</div><div><div className="lp-stat-v">Secure</div><div className="lp-stat-l">2FA Protected</div></div></div>
+                  <div className="lp-stat"><div className="lp-stat-ic b">📊</div><div><div className="lp-stat-v">Smart</div><div className="lp-stat-l">Analytics</div></div></div>
+                </div>
+              </div>
+              <div className="lp-img-wrap">
+                <img src="/static/img/hero.png" alt="" className="lp-hero" />
+              </div>
             </div>
             <div className="lp-bot">
               <div className="lp-bot-live"><div className="lp-bot-dot" /><span className="lp-bot-txt">System Online</span></div>
