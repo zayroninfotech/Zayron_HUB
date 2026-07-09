@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NDA - {{ nda.full_name }}</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9.5pt;
+    color: #1a1a1a;
+    background: #ffffff;
+    line-height: 1.55;
+  }
+
+  @page {
+    size: A4;
+    margin: 20mm 14mm 18mm 14mm;
+  }
+
+  /* ══ PAGE BORDER (all 4 sides) ══ */
+  .page-border-top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: #1e40af;
+  }
+  .page-border-bottom {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: #1e40af;
+  }
+  .page-border-left {
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    width: 3px;
+    background: #1e40af;
+  }
+  .page-border-right {
+    position: fixed;
+    top: 0; bottom: 0; right: 0;
+    width: 3px;
+    background: #1e40af;
+  }
+
+  /* ══ REPEATING PAGE HEADER ══ */
+  .page-header {
+    position: fixed;
+    top: 10%;
+    left: 5mm;
+    right: 5mm;
+  }
+  .page-header-inner {
+    display: table;
+    width: 100%;
+    border-bottom: 1.5px solid #1e40af;
+    padding-bottom: 5px;
+    margin-bottom: 2px;
+  }
+  .ph-logo {
+    display: table-cell;
+    width: 14mm;
+    vertical-align: middle;
+  }
+  .ph-logo img {
+    width: 60px;
+    height: 60px;
+    display: block;
+  }
+  .ph-center {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+  .ph-center .co-name {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #0f172a;
+    display: block;
+    letter-spacing: 0.5px;
+  }
+  .ph-center .doc-title {
+    font-size: 8.5pt;
+    color: #1e40af;
+    font-weight: bold;
+    display: block;
+    margin-top: 1px;
+  }
+  .ph-right {
+    display: table-cell;
+    width: 14mm;
+    vertical-align: middle;
+    text-align: right;
+    font-size: 7pt;
+    color: #64748b;
+  }
+
+  /* ══ REPEATING PAGE FOOTER ══ */
+  .page-footer {
+    position: fixed;
+    bottom: 4mm;
+    left: 5mm;
+    right: 5mm;
+    border-top: 1px solid #bfdbfe;
+    padding-top: 3px;
+    display: table;
+    width: 100%;
+  }
+  .pf-left  {
+    display: table-cell;
+    text-align: left;
+    font-size: 7pt;
+    color: #64748b;
+  }
+  .pf-right {
+    display: table-cell;
+    text-align: right;
+    font-size: 7pt;
+    color: #64748b;
+  }
+
+  /* ══ MAIN CONTENT ══ */
+  .content {
+    width: 100%;
+  }
+
+  /* ══ FIRST PAGE HEADER (big) ══ */
+  .first-header-wrap {
+    display: table;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+  .first-header-logo {
+    display: table-cell;
+    width: 20mm;
+    vertical-align: middle;
+  }
+  .first-header-logo img {
+    width: 56px;
+    height: 56px;
+    display: block;
+  }
+  .first-header-info {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+  .first-header-info .company-name {
+    font-size: 15pt;
+    font-weight: bold;
+    color: #0f172a;
+    letter-spacing: 1px;
+    display: block;
+  }
+  .first-header-info .nda-title {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #1e40af;
+    display: block;
+    margin-top: 3px;
+  }
+  .first-header-info .nda-type {
+    font-size: 9pt;
+    color: #475569;
+    display: block;
+    margin-top: 2px;
+  }
+  .header-rule {
+    width: 100%;
+    height: 2.5px;
+    background: #1e40af;
+    margin: 8px 0 10px 0;
+    display: block;
+  }
+
+  /* ══ INFO TABLE ══ */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 8.5pt;
+  }
+  .info-table td {
+    padding: 5px 8px;
+    border: 0.5px solid #bfdbfe;
+    vertical-align: middle;
+  }
+  .info-table td.lbl {
+    background: #eff6ff;
+    font-weight: bold;
+    color: #1e3a8a;
+    width: 16%;
+    white-space: nowrap;
+  }
+  .info-table td.val {
+    background: #ffffff;
+    color: #111827;
+    width: 34%;
+  }
+
+  /* ══ DIVIDER ══ */
+  .divider {
+    width: 100%;
+    height: 0.5px;
+    background: #cbd5e1;
+    margin: 8px 0;
+    display: block;
+  }
+
+  /* ══ TERMS HEADING ══ */
+  .terms-heading {
+    font-size: 10pt;
+    font-weight: bold;
+    color: #0f172a;
+    margin: 8px 0 5px 0;
+    padding: 5px 8px;
+    background: #eff6ff;
+    border-left: 3px solid #1e40af;
+  }
+
+  /* ══ INTRO TEXT ══ */
+  .intro-text {
+    font-size: 9pt;
+    line-height: 1.65;
+    text-align: justify;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+  }
+
+  /* ══ CLAUSE ══ */
+  .clause-title {
+    font-size: 9.5pt;
+    font-weight: bold;
+    color: #1e40af;
+    margin: 10px 0 3px 0;
+    padding: 3px 6px;
+    background: #f8faff;
+    border-left: 2px solid #93c5fd;
+  }
+  .clause-text {
+    font-size: 9pt;
+    line-height: 1.65;
+    text-align: justify;
+    margin-bottom: 4px;
+    color: #1a1a1a;
+  }
+
+  /* ══ SUB-ITEMS — NO BULLETS ══ */
+  .sub-list {
+    margin: 3px 0 5px 14px;
+    list-style: none;
+    padding: 0;
+  }
+  .sub-list li {
+    font-size: 9pt;
+    line-height: 1.65;
+    text-align: justify;
+    color: #1a1a1a;
+    margin-bottom: 3px;
+    list-style: none;
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  /* ══ SUB-HEADING (Confidential Info categories) ══ */
+  .cat-heading {
+    font-size: 9pt;
+    font-weight: bold;
+    color: #1e40af;
+    margin: 5px 0 2px 0;
+  }
+  .cat-list {
+    margin: 0 0 4px 14px;
+    list-style: none;
+    padding: 0;
+  }
+  .cat-list li {
+    font-size: 9pt;
+    line-height: 1.6;
+    color: #374151;
+    list-style: none;
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 1px;
+  }
+
+  /* ══ PENALTY BOX ══ */
+  .penalty-note {
+    background: #fefce8;
+    border: 0.5px solid #fbbf24;
+    border-left: 3px solid #f59e0b;
+    border-radius: 2px;
+    padding: 6px 10px;
+    margin-top: 5px;
+    font-size: 9pt;
+    color: #78350f;
+    line-height: 1.5;
+  }
+
+  /* ══ SIGNATURE ══ */
+  .sig-section-title {
+    font-size: 10pt;
+    font-weight: bold;
+    color: #0f172a;
+    margin: 12px 0 5px 0;
+    padding: 5px 8px;
+    background: #eff6ff;
+    border-left: 3px solid #1e40af;
+  }
+  .sig-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9pt;
+  }
+  .sig-table td {
+    padding: 7px 10px;
+    border: 0.5px solid #bfdbfe;
+    vertical-align: middle;
+  }
+  .sig-table td.sig-lbl {
+    background: #eff6ff;
+    font-weight: bold;
+    color: #1e3a8a;
+    width: 28%;
+  }
+  .sig-table td.sig-val {
+    background: #ffffff;
+    color: #111827;
+  }
+  .sig-table td.sig-img-cell {
+    background: #ffffff;
+    height: 70px;
+  }
+  .sig-table td.sig-img-cell img {
+    max-height: 60px;
+    max-width: 220px;
+    display: block;
+  }
+
+  /* ══ DOC FOOTER ══ */
+  .doc-footer {
+    text-align: center;
+    font-size: 7pt;
+    color: #94a3b8;
+    margin-top: 14px;
+    padding-top: 6px;
+    border-top: 0.5px solid #e2e8f0;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ══ PAGE BORDERS (all 4 sides, repeat every page) ══ -->
+  <div class="page-border-top"></div>
+  <div class="page-border-bottom"></div>
+  <div class="page-border-left"></div>
+  <div class="page-border-right"></div>
+
+  <!-- ══ REPEATING PAGE HEADER ══ -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="ph-logo">
+        <img src="{{ logo_url }}" alt="Zayron" />
+      </div>
+      <div class="ph-center">
+        <span class="co-name">ZAYRON INFOTECH PVT. LTD.</span>
+        <span class="doc-title">NON-DISCLOSURE AGREEMENT &mdash; {{ emp_type_label }}</span>
+      </div>
+      <div class="ph-right">CONFIDENTIAL</div>
+    </div>
+  </div>
+
+  <!-- ══ REPEATING PAGE FOOTER ══ -->
+  <div class="page-footer">
+    <span class="pf-left">Zayron Infotech Pvt. Ltd. &mdash; Confidential</span>
+    <span class="pf-right">{{ nda.full_name }} | {{ nda.signed_date }}</span>
+  </div>
+
+  <!-- ══ MAIN CONTENT ══ -->
+  <div class="content">
+
+    <!-- INFO TABLE -->
+    <table class="info-table">
+      <tr>
+        <td class="lbl">Employee Name</td>
+        <td class="val">{{ nda.full_name }}</td>
+        <td class="lbl">Employee Type</td>
+        <td class="val">{{ emp_type_label }}</td>
+      </tr>
+      <tr>
+        <td class="lbl">Department</td>
+        <td class="val">{{ employee.department }}</td>
+        <td class="lbl">Designation</td>
+        <td class="val">{{ employee.designation }}</td>
+      </tr>
+      <tr>
+        <td class="lbl">Mobile</td>
+        <td class="val">{{ nda.mobile }}</td>
+        <td class="lbl">Joining Date</td>
+        <td class="val">{{ employee.joining_date }}</td>
+      </tr>
+      <tr>
+        <td class="lbl">Aadhaar No</td>
+        <td class="val">{{ nda.aadhaar_number }}</td>
+        <td class="lbl">Date Signed</td>
+        <td class="val">{{ nda.signed_date }}</td>
+      </tr>
+      <tr>
+        <td class="lbl">Address</td>
+        <td class="val">{{ nda.address }}</td>
+        <td class="lbl">Emergency Contact</td>
+        <td class="val">{{ nda.emergency_contact }}</td>
+      </tr>
+    </table>
+
+    <!-- TERMS -->
+    <div class="terms-heading">TERMS AND CONDITIONS</div>
+
+    <p class="intro-text">
+      This {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} Confidentiality, Non-Disclosure and Intellectual Property Agreement (<strong>"Agreement"</strong>) is entered into between <strong>Zayron Infotech Private Limited</strong>, a company incorporated under the Companies Act, 2013, having its registered office at Hyderabad, Telangana, India (hereinafter referred to as the <strong>"Company"</strong>); and <strong>{{ nda.full_name }}</strong> (hereinafter referred to as the <strong>"{% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %}"</strong>). The Company and {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} are collectively referred to as the <strong>"Parties"</strong>.
+    </p>
+
+    <!-- 1 -->
+    <div class="clause-title">1. PURPOSE</div>
+    <p class="clause-text">The Company may disclose certain confidential, proprietary, technical, business, commercial, financial, operational, and client-related information to the {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} during the course of {% if employee.employee_type == 'permanent' %}employment{% else %}the engagement{% endif %}. The purpose of this Agreement is to protect such Confidential Information and Intellectual Property belonging to the Company, its clients, business partners, vendors, and affiliates.</p>
+
+    <!-- 2 -->
+    <div class="clause-title">2. CONFIDENTIAL INFORMATION</div>
+    <p class="clause-text">For the purpose of this Agreement, <strong>"Confidential Information"</strong> includes, but is not limited to:</p>
+
+    <div class="cat-heading">Business Information</div>
+    <ul class="cat-list">
+      <li>(a) Business plans and strategies</li>
+      <li>(b) Financial information and pricing</li>
+      <li>(c) Customer and vendor information</li>
+      <li>(d) Marketing plans and business opportunities</li>
+      <li>(e) Internal policies and procedures</li>
+    </ul>
+
+    <div class="cat-heading">Technical Information</div>
+    <ul class="cat-list">
+      <li>(a) Software applications and source code</li>
+      <li>(b) Product designs, architecture, databases and configurations</li>
+      <li>(c) APIs, integrations and technical documentation</li>
+      <li>(d) Research, development and validation documents</li>
+    </ul>
+
+    <div class="cat-heading">Client Information</div>
+    <ul class="cat-list">
+      <li>(a) Client requirements, specifications and contracts</li>
+      <li>(b) Project deliverables and customer data</li>
+      <li>(c) Regulatory documentation and validation records</li>
+    </ul>
+
+    <div class="cat-heading">Electronic Information</div>
+    <ul class="cat-list">
+      <li>(a) Emails, communications and passwords</li>
+      <li>(b) Cloud infrastructure and security configurations</li>
+      <li>(c) Internal systems and repositories</li>
+    </ul>
+
+    <p class="clause-text" style="margin-top:5px;">Confidential Information may be disclosed in written, oral, electronic, visual, or any other form.</p>
+
+    <!-- 3 -->
+    <div class="clause-title">3. {% if employee.employee_type == 'permanent' %}EMPLOYEE{% else %}CONTRACTOR{% endif %} CONFIDENTIALITY OBLIGATIONS</div>
+    <p class="clause-text">The {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} agrees that he/she shall:</p>
+    <ul class="sub-list">
+      <li>(a) Maintain the strict confidentiality of all Confidential Information.</li>
+      <li>(b) Use Confidential Information solely for legitimate Company business purposes.</li>
+      <li>(c) Not disclose, copy, reproduce, transfer, publish, distribute, or communicate Confidential Information to any third party without prior written authorization from the Company.</li>
+      <li>(d) Exercise reasonable care and diligence to prevent unauthorized access, disclosure, misuse, or loss of Confidential Information.</li>
+      <li>(e) Immediately notify the Company of any actual or suspected breach of confidentiality.</li>
+    </ul>
+
+    <!-- 4 -->
+    <div class="clause-title">4. CLIENT CONFIDENTIALITY</div>
+    <p class="clause-text">The {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} acknowledges that the Company provides services to various clients and may have access to client-owned confidential information. The {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} shall not disclose, copy, use, or share any client information except as required for authorized project activities, and shall continue to protect client information even after {% if employee.employee_type == 'permanent' %}separation from the Company{% else %}termination of the engagement{% endif %}.</p>
+
+    <!-- 5 -->
+    <div class="clause-title">5. INTELLECTUAL PROPERTY RIGHTS</div>
+    <p class="clause-text">The {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} agrees that all work products created, developed, conceived, designed, authored, or contributed during {% if employee.employee_type == 'permanent' %}employment{% else %}the engagement{% endif %} shall be the exclusive property of the Company{% if employee.employee_type == 'contract' %} and shall be considered <strong>"work made for hire"</strong>{% endif %}. This includes software and source code, applications, reports, documentation, SOPs, templates, designs, inventions, business methodologies, training materials, and databases. The {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} hereby assigns all rights, title, and interest in such intellectual property to the Company.</p>
+
+    <!-- 6 -->
+    <div class="clause-title">6. INFORMATION SECURITY</div>
+    <p class="clause-text">The {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} shall:</p>
+    <ul class="sub-list">
+      <li>(a) Keep passwords and credentials secure.</li>
+      <li>(b) Use Company systems only for authorized business activities.</li>
+      <li>(c) Not install unauthorized software.</li>
+      <li>(d) Not transfer Company or Client data to personal devices or external storage without approval.</li>
+      <li>(e) Follow all Information Security, Data Privacy, and Cybersecurity policies issued by the Company.</li>
+    </ul>
+
+    <!-- 7 -->
+    <div class="clause-title">7. COMPANY PROPERTY</div>
+    <p class="clause-text">All Company-issued assets including laptops, mobile devices, identity cards, access cards, documents, project files, software licenses, email accounts, and storage devices shall remain the sole property of the Company.</p>
+
+    <!-- 8 -->
+    <div class="clause-title">8. RETURN OF COMPANY PROPERTY</div>
+    <p class="clause-text">Upon {% if employee.employee_type == 'permanent' %}resignation, termination, retirement, or suspension{% else %}completion, termination, or expiry of the engagement{% endif %}, or upon request by the Company, the {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} shall immediately return all Company property and Confidential Information and shall not retain any copies in physical or electronic form.</p>
+
+    <!-- 9 -->
+    <div class="clause-title">9. CLIENT NON-SOLICITATION</div>
+    <p class="clause-text">The {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} agrees that during {% if employee.employee_type == 'permanent' %}employment{% else %}the engagement{% endif %} and for a period of six (6) months following termination, he/she shall not:</p>
+    <ul class="sub-list">
+      <li>(a) Directly or indirectly solicit business from any client of the Company.</li>
+      <li>(b) Accept employment, consultancy, contract, outsourcing, freelance, or professional engagement with any Company client with whom the {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} had direct involvement during the preceding twelve (12) months.</li>
+      <li>(c) Use Company information, contacts, pricing, or relationships for personal gain.</li>
+    </ul>
+    <div class="penalty-note">
+      In the event of a breach of this clause, the {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} shall be liable to compensate the Company with liquidated damages of <strong>INR 3,00,000/- (Rupees Three Lakhs Only)</strong>, in addition to any other legal remedies available under applicable law.
+    </div>
+
+    <!-- 10 -->
+    <div class="clause-title">10. NON-SOLICITATION OF EMPLOYEES</div>
+    <p class="clause-text">For a period of one (1) year following separation, the {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} shall not directly or indirectly encourage, induce, recruit, or solicit any employee, consultant, or contractor of the Company to terminate their association with the Company.</p>
+
+    <!-- 11 -->
+    <div class="clause-title">11. TERM OF AGREEMENT</div>
+    <p class="clause-text">This Agreement shall remain in effect throughout the {% if employee.employee_type == 'permanent' %}Employee's employment{% else %}duration of the engagement{% endif %} and for a period of <strong>three (3) years</strong> following termination. The obligations relating to trade secrets, intellectual property, and proprietary information shall survive <strong>indefinitely</strong>.</p>
+
+    <!-- 12 -->
+    <div class="clause-title">12. BREACH AND REMEDIES</div>
+    <p class="clause-text">The {% if employee.employee_type == 'permanent' %}Employee{% else %}Contractor{% endif %} acknowledges that any breach of this Agreement may cause substantial and irreparable harm to the Company. The Company shall have the right to:</p>
+    <ul class="sub-list">
+      <li>(a) {% if employee.employee_type == 'permanent' %}Initiate disciplinary action and terminate employment{% else %}Immediately terminate the engagement without payment{% endif %}.</li>
+      <li>(b) Recover damages and losses.</li>
+      <li>(c) Seek injunctive relief.</li>
+      <li>(d) Initiate civil and/or criminal proceedings as permitted by law.</li>
+    </ul>
+
+    <!-- 13 -->
+    <div class="clause-title">13. GOVERNING LAW AND JURISDICTION</div>
+    <p class="clause-text">This Agreement shall be governed by and construed in accordance with the laws of India. Any dispute arising out of this Agreement shall be subject to the exclusive jurisdiction of the competent courts located in <strong>Hyderabad, Telangana</strong>.</p>
+
+    <!-- 14 -->
+    <div class="clause-title">14. {% if employee.employee_type == 'permanent' %}EMPLOYEE{% else %}CONTRACTOR{% endif %} DECLARATION</div>
+    <p class="clause-text">I hereby declare that:</p>
+    <ul class="sub-list">
+      <li>(a) I have carefully read and understood this Agreement.</li>
+      <li>(b) I agree to abide by all terms and conditions contained herein.</li>
+      <li>(c) I acknowledge my responsibility to protect Company and Client Confidential Information.</li>
+      <li>(d) I understand that violation of this Agreement may result in {% if employee.employee_type == 'permanent' %}disciplinary action, termination of employment{% else %}immediate termination of the engagement{% endif %}, and legal proceedings.</li>
+    </ul>
+
+    <div class="divider" style="margin-top:12px;"></div>
+
+    <!-- SIGNATURE -->
+    <div class="sig-section-title">ACKNOWLEDGMENT &amp; SIGNATURE</div>
+    <table class="sig-table">
+      <tr>
+        <td class="sig-lbl">Employee Name</td>
+        <td class="sig-val">{{ nda.full_name }}</td>
+      </tr>
+      <tr>
+        <td class="sig-lbl">Date Signed</td>
+        <td class="sig-val">{{ nda.signed_date }}</td>
+      </tr>
+      <tr>
+        <td class="sig-lbl">Digital Signature</td>
+        <td class="sig-val" style="font-style:italic;color:#1e40af;">
+          {% if signature_data_url %}
+            <img src="{{ signature_data_url }}" alt="Signature" style="max-height:55px;max-width:200px;display:block;" />
+          {% else %}
+            Agreed electronically by {{ nda.full_name }} on {{ nda.signed_date }}
+          {% endif %}
+        </td>
+      </tr>
+    </table>
+
+    <!-- DOC FOOTER -->
+    <div class="doc-footer">
+      This document was generated electronically by Zayron Infotech Pvt. Ltd. Onboarding System.<br>
+      Generated on: {{ generated_on }}
+    </div>
+
+  </div><!-- end content -->
+
+</body>
+</html>
