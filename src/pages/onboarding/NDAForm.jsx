@@ -251,7 +251,7 @@ export default function NDAForm() {
       {/* Top header */}
       <div style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', padding: '18px 24px' }}>
         <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 14 }}>
-          <img src="/static/img/logo1.png" alt="Zayron" style={{ height: 40, width: 'auto', objectFit: 'contain' }} />
+          <img src="/static/img/logo1.png" alt="Zayron" style={{ height: 40, width: 40, objectFit: 'contain', background: 'white', borderRadius: 10, padding: 4 }} />
           <div>
             <div style={{ color: 'white', fontWeight: 700, fontSize: 16, lineHeight: 1.2 }}>Zayron Infotech Pvt. Ltd.</div>
             <div style={{ color: 'rgba(255,255,255,0.55)', fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Employee Onboarding Portal</div>
