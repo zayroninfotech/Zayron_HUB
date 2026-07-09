@@ -152,7 +152,6 @@ export default function Login() {
         .lp-hero {
           width: 100%; max-width: 290px;
           filter: drop-shadow(0 20px 40px rgba(0,0,0,0.55));
-          animation: herofloat 5s ease-in-out infinite;
         }
 
         /* bottom stats row */
@@ -447,8 +446,6 @@ export default function Login() {
           </div>
 
 
-          <div className="lp-dots lp-dots1" />
-          <div className="lp-dots lp-dots2" />
 
           <div className="lp-inner">
             {/* top chip */}
