@@ -154,35 +154,8 @@ export default function CreateEmployee() {
         </div>
       </div>
 
-      {/* Steps */}
-      <div style={stepsBar}>
-        {[
-          { num: 1, label: 'Fill Registration Form', active: true },
-          { num: 2, label: 'Welcome Email Sent' },
-          { num: 3, label: 'Employee Signs NDA' },
-          { num: 4, label: 'Submit Details' },
-          { num: 5, label: 'Onboarding Complete' },
-        ].map((s, i, arr) => (
-          <div key={s.num} style={{ display: 'flex', alignItems: 'center', flex: i < arr.length - 1 ? 1 : 'none' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
-              <div style={{
-                width: 30, height: 30, borderRadius: '50%',
-                background: s.active ? '#6366f1' : '#f1f5f9',
-                color: s.active ? 'white' : '#94a3b8',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 12, fontWeight: 700,
-                border: s.active ? '2px solid #6366f1' : '2px solid #e2e8f0',
-                boxShadow: s.active ? '0 0 0 4px rgba(99,102,241,0.15)' : 'none',
-              }}>{s.num}</div>
-              <span style={{ fontSize: 10, fontWeight: s.active ? 700 : 400, color: s.active ? '#6366f1' : '#94a3b8', whiteSpace: 'nowrap' }}>{s.label}</span>
-            </div>
-            {i < arr.length - 1 && <div style={{ flex: 1, height: 2, background: '#e2e8f0', margin: '0 8px', marginBottom: 18 }} />}
-          </div>
-        ))}
-      </div>
-
-      {/* Body grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 22, alignItems: 'start' }}>
+      {/* Body */}
+      <div>
 
         {/* Form card */}
         <div style={formCard}>
@@ -227,44 +200,6 @@ export default function CreateEmployee() {
           </form>
         </div>
 
-        {/* Side panel */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <SideCard title="What Happens Next?">
-            {[
-              { icon: '✉️', color: '#2563eb', bg: '#eff6ff', title: 'Welcome Email Sent', desc: 'Employee receives a personalised welcome email with their unique onboarding link.' },
-              { icon: '📄', color: '#7c3aed', bg: '#f5f3ff', title: 'NDA Signing', desc: 'Employee reads and digitally signs the NDA agreement online.' },
-              { icon: '📝', color: '#059669', bg: '#f0fdf4', title: 'Personal Details', desc: 'Employee fills personal info and uploads required documents.' },
-              { icon: '✅', color: '#d97706', bg: '#fffbeb', title: 'Onboarding Done', desc: 'HR is notified and employee profile is marked complete.' },
-            ].map((s, i, arr) => (
-              <div key={i} style={{ display: 'flex', gap: 12, paddingBottom: i < arr.length - 1 ? 14 : 0, marginBottom: i < arr.length - 1 ? 14 : 0, borderBottom: i < arr.length - 1 ? '1px solid #f1f5f9' : 'none' }}>
-                <div style={{ width: 34, height: 34, borderRadius: 9, background: s.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>{s.icon}</div>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: s.color }}>{s.title}</div>
-                  <div style={{ fontSize: 12, color: '#64748b', marginTop: 3, lineHeight: 1.5 }}>{s.desc}</div>
-                </div>
-              </div>
-            ))}
-          </SideCard>
-
-          <SideCard title="NDA Type Guide">
-            <div style={{ background: '#ede9fe', borderRadius: 9, padding: '12px 14px', marginBottom: 10 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: '#4c1d95' }}>🔵 Permanent Employee</div>
-              <div style={{ fontSize: 12, color: '#5b21b6', marginTop: 4, lineHeight: 1.5 }}>Full-time staff. NDA covers 3 years post-employment with 1-year non-compete.</div>
-            </div>
-            <div style={{ background: '#fce7f3', borderRadius: 9, padding: '12px 14px' }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: '#831843' }}>🟣 Contract / Freelancer</div>
-              <div style={{ fontSize: 12, color: '#9d174d', marginTop: 4, lineHeight: 1.5 }}>Project-based. NDA covers 3 years with 6-month non-compete.</div>
-            </div>
-          </SideCard>
-
-          <SideCard title="Employee Will Need to Upload">
-            {['Photograph (passport size)', 'Resume / CV', 'Aadhaar Card copy', 'PAN Card copy', 'Educational Certificates'].map((d, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: i < 4 ? 10 : 0, fontSize: 13, color: '#475569' }}>
-                <span style={{ color: '#10b981', fontWeight: 700, fontSize: 15 }}>✓</span> {d}
-              </div>
-            ))}
-          </SideCard>
-        </div>
       </div>
     </Layout>
   )
@@ -279,16 +214,6 @@ function SectionHead({ icon, title }) {
   )
 }
 
-function SideCard({ title, children }) {
-  return (
-    <div style={{ background: 'white', borderRadius: 14, border: '1px solid #e2e8f0', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', overflow: 'hidden' }}>
-      <div style={{ padding: '14px 18px', borderBottom: '1px solid #f1f5f9', background: '#fafafa' }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: '#1e293b' }}>{title}</div>
-      </div>
-      <div style={{ padding: '16px 18px' }}>{children}</div>
-    </div>
-  )
-}
 
 /* Shared styles */
 const inputBase = {
@@ -326,12 +251,6 @@ const emailNotice = {
 }
 const emailNoticeIcon = { fontSize: 20, flexShrink: 0 }
 
-const ndaNotice = {
-  display: 'flex', gap: 10, alignItems: 'flex-start',
-  background: '#f0fdf4', border: '1px solid #bbf7d0',
-  borderRadius: 10, padding: '12px 16px', marginTop: 4,
-}
-
 const heroBanner = {
   background: 'linear-gradient(135deg, #1e3a8a 0%, #4f46e5 60%, #6366f1 100%)',
   borderRadius: 16, padding: '26px 30px', marginBottom: 22,
@@ -349,14 +268,6 @@ const heroBadge = {
   textAlign: 'center', background: 'rgba(255,255,255,0.12)',
   borderRadius: 12, padding: '10px 16px', minWidth: 90,
   backdropFilter: 'blur(4px)',
-}
-
-const stepsBar = {
-  display: 'flex', alignItems: 'center',
-  background: 'white', borderRadius: 12,
-  padding: '16px 28px', marginBottom: 22,
-  border: '1px solid #e2e8f0',
-  boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
 }
 
 const backBtn = {
