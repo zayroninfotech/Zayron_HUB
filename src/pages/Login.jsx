@@ -474,14 +474,6 @@ export default function Login() {
               </div>
             </div>
 
-            {/* stats row */}
-            <div className="lp-stats">
-              <div className="lp-stat"><div className="lp-stat-ic b">👥</div><div className="lp-stat-v">Fast</div><div className="lp-stat-l">Onboarding</div></div>
-              <div className="lp-stat"><div className="lp-stat-ic p">📋</div><div className="lp-stat-v">100%</div><div className="lp-stat-l">Paperless</div></div>
-              <div className="lp-stat"><div className="lp-stat-ic g">🔒</div><div className="lp-stat-v">Secure</div><div className="lp-stat-l">2FA Protected</div></div>
-              <div className="lp-stat"><div className="lp-stat-ic o">📊</div><div className="lp-stat-v">Smart</div><div className="lp-stat-l">Analytics</div></div>
-            </div>
-
             {/* bottom bar */}
             <div className="lp-bot">
               <div className="lp-bot-live"><div className="lp-bot-dot" /><span className="lp-bot-txt">System Online</span></div>
