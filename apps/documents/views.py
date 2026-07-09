@@ -1,6 +1,7 @@
 import re
 import secrets
 import string
+import threading
 from datetime import datetime, timezone
 
 from rest_framework import status
@@ -116,16 +117,19 @@ class EmployeeDetailsSubmitView(APIView):
             except Exception:
                 pass
 
-        try:
-            send_onboarding_complete_email(details)
-        except Exception:
-            pass
-
-        if portal_user and raw_password:
+        # Send all emails in background so response returns immediately
+        def _send_emails():
             try:
-                send_credentials_email(employee, portal_user.username, raw_password)
+                send_onboarding_complete_email(details)
             except Exception:
                 pass
+            if portal_user and raw_password:
+                try:
+                    send_credentials_email(employee, portal_user.username, raw_password)
+                except Exception:
+                    pass
+
+        threading.Thread(target=_send_emails, daemon=True).start()
 
         return Response(EmployeeDetailsSerializer(details, context={'request': request}).data, status=status.HTTP_201_CREATED)
 
