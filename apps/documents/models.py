@@ -21,6 +21,7 @@ class EmployeeDetails(models.Model):
     ]
 
     employee = models.OneToOneField('employees.Employee', on_delete=models.CASCADE, related_name='employeedetails')
+    mobile_number = models.CharField(max_length=15, blank=True, default='')
     father_name = models.CharField(max_length=200)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)

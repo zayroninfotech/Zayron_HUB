@@ -60,7 +60,7 @@ export default function DetailsForm() {
   const [errors, setErrors] = useState({})
 
   const [form, setForm] = useState({
-    father_name: '', date_of_birth: '', gender: '', blood_group: '',
+    mobile_number: '', father_name: '', date_of_birth: '', gender: '', blood_group: '',
     address: '',
     bank_name: '', account_number: '', ifsc_code: '',
     emergency_contact_name: '', emergency_contact: '',
@@ -75,7 +75,7 @@ export default function DetailsForm() {
 
   const validate = () => {
     const errs = {}
-    const required = ['father_name', 'date_of_birth', 'gender', 'blood_group', 'address', 'bank_name', 'account_number', 'ifsc_code', 'emergency_contact_name', 'emergency_contact']
+    const required = ['mobile_number', 'father_name', 'date_of_birth', 'gender', 'blood_group', 'address', 'bank_name', 'account_number', 'ifsc_code', 'emergency_contact_name', 'emergency_contact']
     required.forEach(k => { if (!form[k].trim()) errs[k] = 'This field is required' })
     if (form.ifsc_code && !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(form.ifsc_code.toUpperCase())) errs.ifsc_code = 'Invalid IFSC format'
     setErrors(errs)
@@ -129,6 +129,9 @@ export default function DetailsForm() {
               {/* Personal */}
               <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--gray-700)', marginBottom: 14, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Personal Information</h3>
               <div className="form-grid">
+                <FormGroup errors={errors} label="Mobile Number" name="mobile_number" required>
+                  <input className="form-control" placeholder="10-digit mobile number" value={form.mobile_number} onChange={e => set('mobile_number', e.target.value.replace(/\D/g, ''))} maxLength={10} autoComplete="off" spellCheck={false} />
+                </FormGroup>
                 <FormGroup errors={errors}label="Father's Name" name="father_name" required>
                   <input className="form-control" value={form.father_name} onChange={e => set('father_name', e.target.value)} autoComplete="off" spellCheck={false} />
                 </FormGroup>
