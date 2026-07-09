@@ -163,17 +163,18 @@ export default function Login() {
 
         /* hero image */
         .lp-hero {
-          position: absolute; right: -20px; bottom: 60px;
-          width: 52%; max-width: 340px;
-          z-index: 1; pointer-events: none;
+          width: 85%; max-width: 380px;
+          margin: 24px auto 0;
+          display: block;
           filter: drop-shadow(0 24px 48px rgba(0,0,0,0.5));
-          animation: herофloat 5s ease-in-out infinite;
+          animation: herofloat 5s ease-in-out infinite;
+          position: relative; z-index: 1;
         }
-        @keyframes herофloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+        @keyframes herofloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
 
         /* inner content */
         .lp-inner { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; }
-        .lp-top   { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .lp-top   { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
         .lp-chip {
           display: inline-flex; align-items: center; gap: 8px;
@@ -505,11 +506,11 @@ export default function Login() {
 
           <div className="lp-dots lp-dots1" />
           <div className="lp-dots lp-dots2" />
-          <img src="/static/img/hero.png" alt="" className="lp-hero" />
 
           <div className="lp-inner">
             <div className="lp-top">
               <div className="lp-chip"><span className="lp-chip-dot" />Zayron Suite</div>
+              <img src="/static/img/hero.png" alt="" className="lp-hero" />
             </div>
             <div className="lp-bot">
               <div className="lp-bot-live"><div className="lp-bot-dot" /><span className="lp-bot-txt">System Online</span></div>
