@@ -161,6 +161,16 @@ export default function Login() {
         .lp-dots1 { width: 140px; height: 140px; top: 48%; left: 52%; opacity: 0.4; }
         .lp-dots2 { width: 100px; height: 100px; top: 6%; right: 30%; opacity: 0.25; }
 
+        /* hero image */
+        .lp-hero {
+          position: absolute; right: -20px; bottom: 60px;
+          width: 52%; max-width: 340px;
+          z-index: 1; pointer-events: none;
+          filter: drop-shadow(0 24px 48px rgba(0,0,0,0.5));
+          animation: herофloat 5s ease-in-out infinite;
+        }
+        @keyframes herофloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
         /* inner content */
         .lp-inner { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; }
         .lp-top   { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -508,6 +518,7 @@ export default function Login() {
 
           <div className="lp-dots lp-dots1" />
           <div className="lp-dots lp-dots2" />
+          <img src="/static/img/hero.png" alt="" className="lp-hero" />
 
           <div className="lp-inner">
             <div className="lp-top">
