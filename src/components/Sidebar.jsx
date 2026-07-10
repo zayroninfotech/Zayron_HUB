@@ -29,7 +29,7 @@ const SIDEBAR_W = 268
 export default function Sidebar({ open = true, onClose }) {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const isAdmin = user?.role === 'superadmin' || user?.role === 'admin'
+  const isAdmin = ['superadmin', 'admin', 'hr'].includes(user?.role)
   const handleLogout = () => { logout(); navigate('/login') }
   const initials = (user?.full_name || user?.username || 'A').slice(0, 2).toUpperCase()
   const now = new Date()
