@@ -31,10 +31,12 @@ api.interceptors.response.use(
         } catch {
           localStorage.clear()
           window.location.href = '/login'
+          return Promise.reject(new Error('Session expired. Please sign in again.'))
         }
       } else {
         localStorage.clear()
         window.location.href = '/login'
+        return Promise.reject(new Error('Session expired. Please sign in again.'))
       }
     }
     return Promise.reject(err)
