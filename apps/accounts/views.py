@@ -55,24 +55,20 @@ def _make_qr_base64(uri):
 def _issue_jwt(mongo_user):
     """Get or create Django user from MongoDB doc and issue JWT tokens."""
     mongo_role = mongo_user.get('role', 'employee')
-    django_user, created = User.objects.get_or_create(
+    django_user, _ = User.objects.get_or_create(
         username=mongo_user['username'],
         defaults={
             'email':      mongo_user.get('email', ''),
             'first_name': mongo_user.get('first_name', ''),
             'last_name':  mongo_user.get('last_name', ''),
-            'role':       mongo_role,
             'is_active':  True,
             'is_staff':   mongo_user.get('is_staff', False),
             'is_superuser': mongo_user.get('is_superuser', False),
         }
     )
-    if not created and django_user.role != mongo_role:
-        django_user.role = mongo_role
-        django_user.save(update_fields=['role'])
     refresh = RefreshToken.for_user(django_user)
     refresh['username']  = django_user.username
-    refresh['role']      = django_user.role
+    refresh['role']      = mongo_role
     refresh['full_name'] = django_user.get_full_name()
 
     return {
@@ -82,7 +78,7 @@ def _issue_jwt(mongo_user):
             'id':        django_user.pk,
             'username':  django_user.username,
             'email':     django_user.email,
-            'role':      django_user.role,
+            'role':      mongo_role,
             'full_name': django_user.get_full_name(),
         },
     }
