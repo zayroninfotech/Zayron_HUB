@@ -70,6 +70,7 @@ def _insert_mongo_user(username, email, raw_password, employee):
 
 class EmployeeDetailsSubmitView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, token):

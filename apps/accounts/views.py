@@ -88,6 +88,7 @@ def _issue_jwt(mongo_user):
 
 class VerifyCredentialsView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     def post(self, request):
         username = request.data.get('username', '').strip()
@@ -143,6 +144,7 @@ class VerifyCredentialsView(APIView):
 
 class VerifyOTPView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     def post(self, request):
         temp_token = request.data.get('temp_token', '')
@@ -286,6 +288,7 @@ Reset My Password
 
 class ForgotPasswordView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     def post(self, request):
         email = request.data.get('email', '').strip().lower()
@@ -315,6 +318,7 @@ class ForgotPasswordView(APIView):
 
 class ResetPasswordView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     def post(self, request):
         token    = request.data.get('token', '')
