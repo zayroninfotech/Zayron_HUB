@@ -18,8 +18,8 @@ const navItems = [
   {
     section: 'EMPLOYEES',
     links: [
-      { to: '/admin/employees', label: 'Employees', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75 M9 7a4 4 0 1 1 0-8 4 4 0 0 1 0 8z', badge: null, color: '#3b82f6' },
-      { to: '/admin/employees/new', label: 'Add Employee', icon: 'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M12.5 7a4 4 0 1 1 0 .001 M20 8v6 M23 11h-6', badge: 'New', color: '#10b981', adminOnly: true },
+      { to: '/admin/employees', label: 'Employees', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75 M9 7a4 4 0 1 1 0-8 4 4 0 0 1 0 8z', badge: null, color: '#3b82f6', roles: ['superadmin', 'hr', 'employee', 'it_admin'] },
+      { to: '/admin/employees/new', label: 'Add Employee', icon: 'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M12.5 7a4 4 0 1 1 0 .001 M20 8v6 M23 11h-6', badge: 'New', color: '#10b981', roles: ['superadmin', 'hr'] },
     ]
   },
 ]
@@ -29,7 +29,7 @@ const SIDEBAR_W = 268
 export default function Sidebar({ open = true, onClose }) {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const isAdmin = ['superadmin', 'admin', 'hr'].includes(user?.role)
+  const userRole = user?.role
   const handleLogout = () => { logout(); navigate('/login') }
   const initials = (user?.full_name || user?.username || 'A').slice(0, 2).toUpperCase()
   const now = new Date()
@@ -322,7 +322,7 @@ export default function Sidebar({ open = true, onClose }) {
               <div key={section} className="sb-section">
                 <div className="sb-section-label">{section}</div>
                 <div className="sb-section-links">
-                  {links.filter(({ adminOnly }) => !adminOnly || isAdmin).map(({ to, label, icon, badge, color }) => (
+                  {links.filter(({ roles }) => !roles || roles.includes(userRole)).map(({ to, label, icon, badge, color }) => (
                     <NavLink key={to} to={to}
                       className={({ isActive }) => `sb-link${isActive ? ' active' : ''}`}>
                       {({ isActive }) => (
