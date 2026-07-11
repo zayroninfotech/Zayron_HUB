@@ -101,8 +101,14 @@ export default function CreateEmployee() {
       navigate('/admin/employees')
     } catch (err) {
       const d = err.response?.data
-      if (d && typeof d === 'object') { setErrors(d); toast.error('Please fix the errors and try again.') }
-      else toast.error('Failed to create employee. Please try again.')
+      if (d?.error) {
+        toast.error(d.error)
+      } else if (d && typeof d === 'object') {
+        setErrors(d)
+        toast.error('Please fix the errors and try again.')
+      } else {
+        toast.error('Failed to create employee. Please try again.')
+      }
     } finally { setLoading(false) }
   }
 
