@@ -20,6 +20,7 @@ import ResetPassword from './pages/ResetPassword'
 import MyProfile from './pages/employee/MyProfile'
 import Timesheet from './pages/employee/Timesheet'
 import TimesheetApproval from './pages/admin/TimesheetApproval'
+import ChangePassword from './pages/ChangePassword'
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
 
           {/* Employee routes */}
           <Route path="/admin/timesheet" element={<ProtectedRoute><Timesheet /></ProtectedRoute>} />
+          <Route path="/admin/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
 
           {/* Password reset (public) */}
           <Route path="/reset-password/:token" element={<ResetPassword />} />
