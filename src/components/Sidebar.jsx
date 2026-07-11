@@ -379,23 +379,6 @@ export default function Sidebar({ open = true, onClose }) {
         {/* ── RIGHT PANEL ── */}
         <div className="sb-panel">
 
-          {/* Profile */}
-          <div className="sb-profile">
-            <div className="sb-avatar-wrap">
-              <div className="sb-avatar" style={{ background: `linear-gradient(135deg, ${roleColor}cc, ${roleColor}88)`, boxShadow: `0 4px 16px ${roleColor}44` }}>
-                {initials}
-                <div className="sb-avatar-online" />
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <div className="sb-profile-name">{user?.full_name || user?.username || 'User'}</div>
-                <div className="sb-profile-role-badge" style={{ background: `${roleColor}20`, color: roleColor, border: `1px solid ${roleColor}35` }}>
-                  {ROLE_LABELS[userRole] || userRole}
-                </div>
-              </div>
-            </div>
-
-          </div>
-
           {/* Section heading */}
           <div className="sb-section-head">
             <div className="sb-section-dot" style={{ background: currentModule?.color || '#6366f1', boxShadow: `0 0 6px ${currentModule?.color || '#6366f1'}` }} />
