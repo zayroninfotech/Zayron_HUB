@@ -17,6 +17,7 @@ import NDAForm from './pages/onboarding/NDAForm'
 import DetailsForm from './pages/onboarding/DetailsForm'
 import Completion from './pages/onboarding/Completion'
 import ResetPassword from './pages/ResetPassword'
+import MyProfile from './pages/employee/MyProfile'
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
 
           {/* All logged-in users */}
+          <Route path="/admin/my-profile" element={<ProtectedRoute><MyProfile /></ProtectedRoute>} />
           <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/admin/projects" element={<ProtectedRoute><ProjectList /></ProtectedRoute>} />
           <Route path="/admin/projects/assign" element={<ProtectedRoute><ProjectAssign /></ProtectedRoute>} />
