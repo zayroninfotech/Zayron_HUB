@@ -109,28 +109,28 @@ export default function CreateEmployee() {
   return (
     <Layout title="Add New Employee">
       <style>{`
-        .ce-wrap { padding: 28px 32px 48px; max-width: 900px; }
+        .ce-wrap { padding: 16px 24px 24px; max-width: 900px; }
         .ce-notice {
-          display: flex; align-items: center; gap: 14px;
+          display: flex; align-items: center; gap: 12px;
           background: linear-gradient(135deg,#eff6ff,#e0e7ff);
-          border: 1px solid #c7d2fe; border-radius: 12px;
-          padding: 14px 20px; margin-bottom: 30px;
+          border: 1px solid #c7d2fe; border-radius: 10px;
+          padding: 10px 16px; margin-bottom: 14px;
         }
         .ce-notice-icon {
-          width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+          width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
           background: linear-gradient(135deg,#6366f1,#818cf8);
-          display: flex; align-items: center; justify-content: center; font-size: 18px;
+          display: flex; align-items: center; justify-content: center; font-size: 16px;
         }
         .ce-section {
           display: flex; align-items: center; gap: 10px;
-          margin: 32px 0 20px; padding-bottom: 12px;
+          margin: 14px 0 10px; padding-bottom: 8px;
           border-bottom: 1.5px solid #e2e8f0;
         }
-        .ce-section-bar { width: 4px; height: 18px; border-radius: 2px; background: linear-gradient(180deg,#6366f1,#818cf8); flex-shrink: 0; }
+        .ce-section-bar { width: 4px; height: 16px; border-radius: 2px; background: linear-gradient(180deg,#6366f1,#818cf8); flex-shrink: 0; }
         .ce-section-label { font-size: 11px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.09em; }
-        .ce-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-        .ce-row { margin-bottom: 16px; }
-        .ce-actions { display: flex; gap: 12px; margin-top: 36px; padding-top: 24px; border-top: 1.5px solid #f1f5f9; }
+        .ce-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; }
+        .ce-row { margin-bottom: 10px; }
+        .ce-actions { display: flex; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1.5px solid #f1f5f9; }
         .ce-submit {
           padding: 13px 40px; border-radius: 10px; border: none; cursor: pointer;
           background: linear-gradient(135deg,#4f46e5,#6366f1);
