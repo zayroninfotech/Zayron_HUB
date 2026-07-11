@@ -49,6 +49,15 @@ export default function EmployeeDetail() {
     } catch { toast.error('Failed to send email. Check email configuration.') }
   }
 
+  const resendCredentials = async () => {
+    try {
+      await api.post(`/details/resend-credentials/${id}/`)
+      toast.success('Login credentials email sent successfully.')
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Failed to send credentials email.')
+    }
+  }
+
   const regeneratePdf = async () => {
     try {
       await api.post(`/ndas/employee/${id}/regenerate/`)
@@ -90,7 +99,8 @@ export default function EmployeeDetail() {
   return (
     <Layout title={employee.name} actions={
       <div style={{ display: 'flex', gap: 10 }}>
-        <button onClick={resendEmail} className="btn btn-secondary">📧 Resend Email</button>
+        <button onClick={resendEmail} className="btn btn-secondary">📧 Resend Onboarding</button>
+        <button onClick={resendCredentials} className="btn btn-secondary">🔑 Resend Credentials</button>
         <Link to="/admin/employees" className="btn btn-secondary">← Back</Link>
       </div>
     }>

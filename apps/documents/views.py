@@ -160,40 +160,24 @@ class EmployeeDetailsSubmitView(APIView):
                 django_user = User.objects.filter(email=emp_email).first()
                 mongo_exists = bool(col('users').find_one({'email': emp_email}))
 
-                portal_user = None
-                raw_password = None
+                raw_password = _generate_password()
 
                 if not django_user:
                     emp_id_field = emp_doc.get('employee_id', '')
                     username = emp_id_field if emp_id_field else _generate_username(emp_name, emp_email)
-                    raw_password = _generate_password()
-                    portal_user = User.objects.create_user(
+                    django_user = User.objects.create_user(
                         username=username, email=emp_email, password=raw_password,
                         first_name=emp_name.split()[0] if emp_name else '',
                         last_name=' '.join(emp_name.split()[1:]) if len(emp_name.split()) > 1 else '',
                         role='employee',
                     )
-                    if not mongo_exists:
-                        col('users').insert_one({
-                            'username': username,
-                            'email': emp_email,
-                            'password': make_password(raw_password),
-                            'first_name': emp_name.split()[0] if emp_name else '',
-                            'last_name': ' '.join(emp_name.split()[1:]) if len(emp_name.split()) > 1 else '',
-                            'role': 'employee',
-                            'employee_type': emp_type,
-                            'is_active': True,
-                            'is_staff': False,
-                            'is_superuser': False,
-                            'totp_secret': None,
-                            'created_at': datetime.now(timezone.utc),
-                        })
-                elif not mongo_exists:
-                    raw_password = _generate_password()
-                    portal_user = django_user
-                    portal_user.set_password(raw_password)
-                    portal_user.save()
-                    col('users').insert_one({
+                else:
+                    django_user.set_password(raw_password)
+                    django_user.save()
+
+                col('users').update_one(
+                    {'email': emp_email},
+                    {'$set': {
                         'username': django_user.username,
                         'email': emp_email,
                         'password': make_password(raw_password),
@@ -206,12 +190,14 @@ class EmployeeDetailsSubmitView(APIView):
                         'is_superuser': False,
                         'totp_secret': None,
                         'created_at': datetime.now(timezone.utc),
-                    })
+                    }},
+                    upsert=True,
+                )
 
-                if portal_user and raw_password:
-                    send_credentials_email(emp, portal_user.username, raw_password)
-            except Exception:
-                pass
+                send_credentials_email(emp, django_user.username, raw_password)
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error(f'Credentials setup/email failed for {emp.get("email")}: {e}', exc_info=True)
 
         threading.Thread(target=_background, daemon=True).start()
 
@@ -226,3 +212,67 @@ class EmployeeDetailsView(APIView):
         if not doc:
             return Response({'error': 'Details not found.'}, status=status.HTTP_404_NOT_FOUND)
         return Response(_serialize_details(doc))
+
+
+class ResendCredentialsView(APIView):
+    permission_classes = [IsAdminOrHR]
+
+    def post(self, request, employee_id):
+        from bson import ObjectId
+        try:
+            oid = ObjectId(employee_id)
+        except Exception:
+            return Response({'error': 'Invalid employee ID.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        emp_doc = col('employees').find_one({'_id': oid})
+        if not emp_doc:
+            return Response({'error': 'Employee not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        emp_email = emp_doc.get('email', '')
+        emp_name = emp_doc.get('name', '')
+        emp_type = emp_doc.get('employee_type', '')
+        emp_id_field = emp_doc.get('employee_id', '')
+
+        User = get_user_model()
+        django_user = User.objects.filter(email=emp_email).first()
+        raw_password = _generate_password()
+
+        if django_user:
+            django_user.set_password(raw_password)
+            django_user.save()
+            username = django_user.username
+        else:
+            username = emp_id_field if emp_id_field else _generate_username(emp_name, emp_email)
+            django_user = User.objects.create_user(
+                username=username, email=emp_email, password=raw_password,
+                first_name=emp_name.split()[0] if emp_name else '',
+                last_name=' '.join(emp_name.split()[1:]) if len(emp_name.split()) > 1 else '',
+                role='employee',
+            )
+            col('users').update_one(
+                {'email': emp_email},
+                {'$set': {
+                    'username': username,
+                    'email': emp_email,
+                    'password': make_password(raw_password),
+                    'role': 'employee',
+                    'employee_type': emp_type,
+                    'is_active': True,
+                }},
+                upsert=True,
+            )
+
+        emp = {
+            'id': str(emp_doc['_id']),
+            'employee_id': emp_id_field,
+            'name': emp_name,
+            'email': emp_email,
+            'joining_date': emp_doc.get('joining_date', ''),
+            'employee_type': emp_type,
+        }
+        try:
+            send_credentials_email(emp, username, raw_password)
+        except Exception as e:
+            return Response({'error': f'User created but email failed: {e}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({'message': f'Credentials email sent to {emp_email}.'})
