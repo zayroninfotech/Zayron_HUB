@@ -97,6 +97,7 @@ class EmployeeListCreateView(APIView):
             'joining_date': data['joining_date'],
             'onboarding_token': token,
             'status': 'pending',
+            'role': 'employee',
             'created_by': request.user.username,
             'created_at': now,
             'updated_at': now,
@@ -156,6 +157,26 @@ class EmployeeDetailView(APIView):
         if result.deleted_count == 0:
             return Response({'error': 'Employee not found.'}, status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class EmployeeRoleView(APIView):
+    permission_classes = [IsAdminOrHR]
+
+    def patch(self, request, pk):
+        oid = _oid(pk)
+        if not oid:
+            return Response({'error': 'Invalid ID.'}, status=status.HTTP_400_BAD_REQUEST)
+        role = request.data.get('role', '').strip()
+        if role not in ('employee', 'hr', 'it_admin'):
+            return Response({'error': 'Invalid role. Choose employee, hr, or it_admin.'}, status=status.HTTP_400_BAD_REQUEST)
+        emp = col('employees').find_one({'_id': oid})
+        if not emp:
+            return Response({'error': 'Employee not found.'}, status=status.HTTP_404_NOT_FOUND)
+        email = emp.get('email', '')
+        result = col('users').update_one({'email': email}, {'$set': {'role': role}})
+        if result.matched_count == 0:
+            return Response({'error': 'User account not found. Employee may not have completed onboarding.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'detail': 'Role updated successfully.', 'role': role})
 
 
 class MyProfileView(APIView):

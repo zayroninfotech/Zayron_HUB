@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import (
     EmployeeListCreateView, EmployeeDetailView, EmployeeByTokenView,
-    DashboardStatsView, ExportEmployeesView, ResendEmailView, MyProfileView
+    DashboardStatsView, ExportEmployeesView, ResendEmailView, MyProfileView,
+    EmployeeRoleView
 )
 
 urlpatterns = [
@@ -11,5 +12,6 @@ urlpatterns = [
     path('export/', ExportEmployeesView.as_view(), name='export-employees'),
     path('token/<uuid:token>/', EmployeeByTokenView.as_view(), name='employee-by-token'),
     path('<str:pk>/resend-email/', ResendEmailView.as_view(), name='resend-email'),
+    path('<str:pk>/role/', EmployeeRoleView.as_view(), name='employee-role'),
     path('<str:pk>/', EmployeeDetailView.as_view(), name='employee-detail'),
 ]

@@ -13,12 +13,21 @@ function TypeBadge({ type }) {
   return <span className={`badge badge-${type}`}>{type === 'permanent' ? 'Permanent' : 'Contract'}</span>
 }
 
+const ROLE_OPTIONS = [
+  { value: 'employee', label: 'Employee' },
+  { value: 'hr',       label: 'HR Manager' },
+  { value: 'it_admin', label: 'IT Admin' },
+]
+
 export default function EmployeeList() {
   const [employees, setEmployees] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [filterType, setFilterType] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
+  const [roleModal, setRoleModal] = useState(null) // { id, name, role }
+  const [roleValue, setRoleValue] = useState('')
+  const [roleSaving, setRoleSaving] = useState(false)
 
   const fetchEmployees = useCallback(async () => {
     setLoading(true)
@@ -44,6 +53,22 @@ export default function EmployeeList() {
 
   const copyLink = (link) => {
     navigator.clipboard.writeText(link).then(() => toast.success('Onboarding link copied!')).catch(() => toast.error('Failed to copy.'))
+  }
+
+  const openRoleModal = (emp) => {
+    setRoleModal({ id: emp.id, name: emp.name })
+    setRoleValue('employee')
+  }
+
+  const saveRole = async () => {
+    setRoleSaving(true)
+    try {
+      await api.patch(`/employees/${roleModal.id}/role/`, { role: roleValue })
+      toast.success(`Role updated to "${ROLE_OPTIONS.find(r => r.value === roleValue)?.label}" for ${roleModal.name}.`)
+      setRoleModal(null)
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Failed to update role.')
+    } finally { setRoleSaving(false) }
   }
 
   const deleteEmployee = async (id, name) => {
@@ -143,10 +168,10 @@ export default function EmployeeList() {
                   <td>
                     <div style={{ display: 'flex', gap: 6 }}>
                       <Link to={`/admin/employees/${emp.id}`} className="btn btn-secondary btn-sm">View</Link>
-                      <Link to={`/admin/employees/${emp.id}/edit`} className="btn btn-sm" style={{ background: '#f0f5ff', color: '#2563eb', border: '1px solid #dbeafe', borderRadius: 6, padding: '4px 12px', fontSize: 13, fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      <button onClick={() => openRoleModal(emp)} className="btn btn-sm" style={{ background: '#f0f5ff', color: '#2563eb', border: '1px solid #dbeafe', borderRadius: 6, padding: '4px 12px', fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                         Edit
-                      </Link>
+                      </button>
                       <button className="btn btn-secondary btn-sm" onClick={() => copyLink(emp.onboarding_link)} title="Copy link">🔗</button>
                       <button className="btn btn-secondary btn-sm" onClick={() => resendEmail(emp.id, emp.name)} title="Resend email">📧</button>
                       <button className="btn btn-danger btn-sm" onClick={() => deleteEmployee(emp.id, emp.name)} title="Delete employee">🗑</button>
@@ -158,6 +183,42 @@ export default function EmployeeList() {
           </table>
         </div>
       </div>
+
+      {/* Role Modal */}
+      {roleModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#fff', borderRadius: 16, padding: '28px 32px', width: 380, boxShadow: '0 20px 60px rgba(0,0,0,0.18)' }}>
+            <div style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', marginBottom: 4 }}>Update Employee Role</div>
+            <div style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>{roleModal.name}</div>
+
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ fontSize: 11, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 8 }}>Select Role</label>
+              <select
+                value={roleValue}
+                onChange={e => setRoleValue(e.target.value)}
+                style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1.5px solid #e2e8f0', fontSize: 14, color: '#0f172a', background: '#f8fafc', outline: 'none', cursor: 'pointer' }}
+              >
+                {ROLE_OPTIONS.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button
+                onClick={saveRole} disabled={roleSaving}
+                style={{ flex: 1, padding: '11px', borderRadius: 9, border: 'none', cursor: 'pointer', background: 'linear-gradient(135deg,#4f46e5,#6366f1)', color: 'white', fontSize: 14, fontWeight: 700 }}
+              >
+                {roleSaving ? 'Saving...' : 'Update Role'}
+              </button>
+              <button
+                onClick={() => setRoleModal(null)}
+                style={{ padding: '11px 20px', borderRadius: 9, border: '1.5px solid #e2e8f0', background: 'white', color: '#64748b', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   )
 }
