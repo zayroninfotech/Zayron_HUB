@@ -109,7 +109,7 @@ export default function CreateEmployee() {
   return (
     <Layout title="Add New Employee">
       <style>{`
-        .ce-wrap { padding: 16px 24px 24px; max-width: 900px; }
+        .ce-wrap { padding: 16px 24px 24px; }
         .ce-notice {
           display: flex; align-items: center; gap: 12px;
           background: linear-gradient(135deg,#eff6ff,#e0e7ff);
