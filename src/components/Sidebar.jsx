@@ -316,14 +316,6 @@ export default function Sidebar({ open = true, onClose }) {
 
 
 
-          {/* ── Search ── */}
-          <div className="sb-search">
-            <svg width="13" height="13" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-            <input placeholder="Quick search…" autoComplete="off" />
-          </div>
-
           {/* ── Nav ── */}
           <nav className="sb-nav">
             {navItems.map(({ section, links }) => (
@@ -352,22 +344,6 @@ export default function Sidebar({ open = true, onClose }) {
 
           {/* ── Footer ── */}
           <div className="sb-footer">
-            <div className="sb-user">
-              <div className="sb-avatar-ring" style={{ position: 'relative', flexShrink: 0 }}>
-                <div className="sb-avatar">{initials}</div>
-                <div style={{ position:'absolute', bottom:0, right:0, width:10, height:10, borderRadius:'50%', background:'#22c55e', border:'2px solid #0d1b4b' }} />
-              </div>
-              <div>
-                <div className="sb-uname">{user?.full_name || user?.username}</div>
-                <div className="sb-urole">
-                  {user?.role === 'superadmin' ? 'Super Admin' : user?.role === 'admin' ? 'Admin' : user?.role === 'hr' ? 'HR' : 'Employee'}
-                </div>
-              </div>
-              <div className="sb-chevron" style={{ marginLeft:'auto' }}>
-                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-              </div>
-            </div>
-
             <button className="sb-logout" onClick={handleLogout}>
               <div className="sb-logout-icon">
                 <svg width="14" height="14" fill="none" stroke="#f87171" strokeWidth="2" viewBox="0 0 24 24">
