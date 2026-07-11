@@ -203,13 +203,6 @@ export default function EmployeeDetail() {
               <Field label="Designation" value={employee.designation} />
               <Field label="Onboarding Status" value={<StatusBadge status={employee.status} />} />
             </div>
-            <div style={{ marginTop: 8 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>Onboarding Link</div>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <input className="form-control" value={employee.onboarding_link} readOnly style={{ fontSize: 12 }} />
-                <button className="btn btn-secondary btn-sm" onClick={() => { navigator.clipboard.writeText(employee.onboarding_link); toast.success('Copied!') }}>Copy</button>
-              </div>
-            </div>
           </div>
         )}
 
