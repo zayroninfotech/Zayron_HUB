@@ -62,10 +62,6 @@ export default function EmployeeList() {
           <h1 style={{ fontSize: 20, fontWeight: 700, color: '#111827', margin: 0 }}>Employees</h1>
           <p style={{ fontSize: 13, color: '#6b7280', margin: '4px 0 0' }}>Manage and track all employees</p>
         </div>
-        <Link to="/admin/employees/new" className="btn btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
-          Add Employee
-        </Link>
       </div>
       {/* Filters */}
       <div className="card" style={{ marginBottom: 20 }}>
