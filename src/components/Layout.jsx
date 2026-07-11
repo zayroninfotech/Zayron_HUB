@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import { useAuth } from '../context/AuthContext'
 
@@ -7,6 +8,7 @@ const SIDEBAR_W = 260
 export default function Layout({ title, actions, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user } = useAuth()
+  const navigate = useNavigate()
   const initials = (user?.full_name || user?.username || 'A').slice(0, 2).toUpperCase()
   const today = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })
 
@@ -146,6 +148,23 @@ export default function Layout({ title, actions, children }) {
             }} />
 
             {/* Divider */}
+            <div className="topbar-div" />
+
+            {/* Home button */}
+            <button
+              onClick={() => navigate('/admin/dashboard')}
+              title="Dashboard"
+              style={{ display:'flex', alignItems:'center', gap:7, padding:'7px 14px', borderRadius:10, border:'1.5px solid #e2e8f0', background:'#f8fafc', color:'#475569', fontSize:13, fontWeight:700, cursor:'pointer', flexShrink:0, transition:'all 0.15s' }}
+              onMouseEnter={e => { e.currentTarget.style.background='#eff6ff'; e.currentTarget.style.borderColor='#bfdbfe'; e.currentTarget.style.color='#2563eb' }}
+              onMouseLeave={e => { e.currentTarget.style.background='#f8fafc'; e.currentTarget.style.borderColor='#e2e8f0'; e.currentTarget.style.color='#475569' }}
+            >
+              <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+              </svg>
+              Home
+            </button>
+
             <div className="topbar-div" />
 
             {/* Page title */}

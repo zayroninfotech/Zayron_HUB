@@ -341,18 +341,6 @@ export default function Sidebar({ open = true, onClose }) {
 
           <div className="sb-rail-sep" />
 
-          {/* Home */}
-          <button
-            className={`sb-rail-btn ${location.pathname === '/admin/dashboard' ? 'active' : ''}`}
-            onClick={() => { setSelectedKey(null); navigate('/admin/dashboard') }}
-            title="Dashboard"
-          >
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-            <span className="sb-rail-label">Home</span>
-          </button>
-
-          <div className="sb-rail-sep" />
-
           {/* Module icons */}
           {modules.map(m => (
             <button
