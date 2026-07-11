@@ -76,7 +76,7 @@ export default function CreateEmployee() {
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     name: '', email: '', mobile: '', employee_type: '',
-    joining_date: ''
+    joining_date: '', department: '', designation: ''
   })
   const [errors, setErrors] = useState({})
 
@@ -93,6 +93,8 @@ export default function CreateEmployee() {
     if (!form.mobile.trim()) errs.mobile = 'Mobile number is required'
     if (!form.employee_type) errs.employee_type = 'Please select employee type'
     if (!form.joining_date) errs.joining_date = 'Joining date is required'
+    if (!form.department.trim()) errs.department = 'Department is required'
+    if (!form.designation.trim()) errs.designation = 'Designation is required'
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -184,9 +186,13 @@ export default function CreateEmployee() {
                 <option value="">-- Select --</option>
                 <option value="permanent">Permanent Employee</option>
                 <option value="contract">Contract Employee</option>
+                <option value="intern">Intern</option>
               </FloatInput>
               <FloatInput label="Joining Date" type="date" value={form.joining_date} onChange={e => set('joining_date', e.target.value)} error={errors.joining_date} required />
-
+            </div>
+            <div style={grid2}>
+              <FloatInput label="Department" value={form.department} onChange={e => set('department', e.target.value)} error={errors.department} list="dept-list" required />
+              <FloatInput label="Designation" value={form.designation} onChange={e => set('designation', e.target.value)} error={errors.designation} required />
             </div>
 
             <div style={{ display: 'flex', gap: 12, marginTop: 28, paddingTop: 20, borderTop: '1px solid #f1f5f9' }}>
