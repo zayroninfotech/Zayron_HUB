@@ -98,7 +98,7 @@ export default function CreateEmployee() {
     try {
       const { data } = await api.post('/employees/', form)
       toast.success(`Employee created! Onboarding email sent to ${data.email}.`)
-      navigate('/admin/employees')
+      clearForm()
     } catch (err) {
       const d = err.response?.data
       if (d?.error) {
