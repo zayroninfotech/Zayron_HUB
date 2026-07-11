@@ -291,18 +291,6 @@ export default function Sidebar({ open = true, onClose }) {
             <div className="sb-live-dot" title="System Online" />
           </div>
 
-          {/* User Card */}
-          <div className="sb-user-card">
-            <div className="sb-avatar">
-              {initials}
-              <div className="sb-avatar-online" />
-            </div>
-            <div className="sb-user-info">
-              <div className="sb-user-name">{displayName}</div>
-              <div className="sb-user-role">{roleLabel}</div>
-            </div>
-          </div>
-
           {/* Nav */}
           <nav className="sb-nav">
             {navItems.map(({ section, links }) => (
