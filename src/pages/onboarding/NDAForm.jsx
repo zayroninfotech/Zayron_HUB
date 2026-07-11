@@ -180,7 +180,8 @@ export default function NDAForm() {
   const [agreed, setAgreed] = useState(false)
   const [form, setForm] = useState({
     full_name: '', address: '', mobile: '', aadhaar_number: '',
-    emergency_contact: '', signed_date: new Date().toISOString().split('T')[0]
+    emergency_contact: '', signed_date: new Date().toISOString().split('T')[0],
+    pan_number: '', pan_name: ''
   })
   const [errors, setErrors] = useState({})
 
@@ -203,6 +204,9 @@ export default function NDAForm() {
     if (!form.mobile.trim()) errs.mobile = 'Required'
     if (!/^\d{12}$/.test(form.aadhaar_number)) errs.aadhaar_number = 'Must be 12 digits'
     if (!form.emergency_contact.trim()) errs.emergency_contact = 'Required'
+    if (!form.pan_number.trim()) errs.pan_number = 'Required'
+    else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(form.pan_number.toUpperCase())) errs.pan_number = 'Invalid PAN format (e.g. ABCDE1234F)'
+    if (!form.pan_name.trim()) errs.pan_name = 'Required'
     if (!agreed) errs.agreed = 'You must agree to the NDA terms'
     setErrors(errs)
     return Object.keys(errs).length === 0
@@ -362,6 +366,12 @@ export default function NDAForm() {
                   </Field>
                   <Field label="Date of Signing" error={errors.signed_date}>
                     <input type="date" style={inp} value={form.signed_date} onChange={e => set('signed_date', e.target.value)} />
+                  </Field>
+                  <Field label="PAN Number" error={errors.pan_number}>
+                    <input style={inp} placeholder="e.g. ABCDE1234F" maxLength={10} value={form.pan_number} onChange={e => set('pan_number', e.target.value.toUpperCase())} autoComplete="off" />
+                  </Field>
+                  <Field label="Name As On PAN" error={errors.pan_name}>
+                    <input style={inp} placeholder="Name exactly as on PAN card" value={form.pan_name} onChange={e => set('pan_name', e.target.value)} autoComplete="off" />
                   </Field>
                 </div>
 
