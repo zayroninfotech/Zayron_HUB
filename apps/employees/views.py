@@ -76,7 +76,7 @@ class EmployeeListCreateView(APIView):
 
     def post(self, request):
         data = request.data
-        required = ['name', 'email', 'mobile', 'employee_type', 'department', 'designation', 'joining_date']
+        required = ['name', 'email', 'mobile', 'employee_type', 'joining_date']
         missing = [f for f in required if not data.get(f)]
         if missing:
             return Response({'error': f'Missing fields: {", ".join(missing)}'}, status=status.HTTP_400_BAD_REQUEST)
@@ -91,8 +91,6 @@ class EmployeeListCreateView(APIView):
             'email': data['email'],
             'mobile': data.get('mobile', ''),
             'employee_type': data['employee_type'],
-            'department': data['department'],
-            'designation': data['designation'],
             'joining_date': data['joining_date'],
             'onboarding_token': token,
             'status': 'pending',
