@@ -158,8 +158,7 @@ export default function Layout({ title, actions, children }) {
               onMouseEnter={e => { e.currentTarget.style.background='#eff6ff'; e.currentTarget.style.borderColor='#bfdbfe'; e.currentTarget.style.color='#2563eb' }}
               onMouseLeave={e => { e.currentTarget.style.background='#f8fafc'; e.currentTarget.style.borderColor='#e2e8f0'; e.currentTarget.style.color='#475569' }}
             >
-              <i className="fa fa-home" aria-hidden="true" style={{ fontSize: 15 }} />
-              Home
+              <i className="fa fa-home" aria-hidden="true" style={{ fontSize: 18 }} />
             </button>
 
             <div className="topbar-div" />
