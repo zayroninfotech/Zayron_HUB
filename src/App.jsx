@@ -18,6 +18,8 @@ import DetailsForm from './pages/onboarding/DetailsForm'
 import Completion from './pages/onboarding/Completion'
 import ResetPassword from './pages/ResetPassword'
 import MyProfile from './pages/employee/MyProfile'
+import Timesheet from './pages/employee/Timesheet'
+import TimesheetApproval from './pages/admin/TimesheetApproval'
 
 export default function App() {
   return (
@@ -41,6 +43,10 @@ export default function App() {
           <Route path="/admin/employees/:id" element={<ProtectedRoute adminOnly><EmployeeDetail /></ProtectedRoute>} />
           <Route path="/admin/employees/:id/edit" element={<ProtectedRoute adminOnly><EditEmployee /></ProtectedRoute>} />
           <Route path="/admin/reports" element={<ProtectedRoute adminOnly><Reports /></ProtectedRoute>} />
+          <Route path="/admin/timesheet-approval" element={<ProtectedRoute adminOnly><TimesheetApproval /></ProtectedRoute>} />
+
+          {/* Employee routes */}
+          <Route path="/admin/timesheet" element={<ProtectedRoute><Timesheet /></ProtectedRoute>} />
 
           {/* Password reset (public) */}
           <Route path="/reset-password/:token" element={<ResetPassword />} />

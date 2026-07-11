@@ -405,3 +405,52 @@ Please change your password after your first login. Do not share your credential
         log_email(emp['email'], subject, 'credentials', status='failed', error=e,
                   extra={'employee_id': str(emp.get('id', '')), 'username': username})
         raise
+
+
+def send_timesheet_email(sheet, action):
+    """Send approval/rejection email to employee."""
+    emp_email = sheet.get('employee_email', '')
+    emp_name = sheet.get('employee_name', 'Employee')
+    week = sheet.get('week_start', '')
+    comment = sheet.get('hr_comment', '')
+    portal_url = getattr(settings, 'BASE_URL', 'https://zayrosuite.com')
+
+    is_approved = action == 'approved'
+    subject = f'Timesheet {"Approved" if is_approved else "Rejected"} — Week of {week}'
+    color = '#10b981' if is_approved else '#ef4444'
+    status_word = 'Approved ✓' if is_approved else 'Rejected ✗'
+
+    html_body = f"""<!DOCTYPE html>
+<html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:20px;background:#e8edf5;font-family:Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(13,27,75,0.10);">
+<tr><td style="background:linear-gradient(135deg,#0d1b4b,#3b82f6);padding:24px 28px;text-align:center;">
+<p style="color:#fff;font-size:20px;font-weight:800;margin:0;">Zayron Infotech Pvt. Ltd.</p>
+<p style="color:#bfdbfe;font-size:11px;margin:4px 0 0;letter-spacing:1.5px;text-transform:uppercase;">HR Portal · Timesheet Notification</p>
+</td></tr>
+<tr><td style="background:{'#ecfdf5' if is_approved else '#fef2f2'};padding:14px 28px;border-bottom:1px solid {'#6ee7b7' if is_approved else '#fca5a5'};">
+<p style="color:{color};font-size:16px;font-weight:700;margin:0;">Timesheet {status_word}</p>
+<p style="color:#6b7280;font-size:13px;margin:4px 0 0;">Week starting {week}</p>
+</td></tr>
+<tr><td style="padding:24px 32px;">
+<p style="color:#374151;font-size:14px;line-height:1.7;margin:0 0 16px;">
+Dear <strong>{emp_name}</strong>, your timesheet for the week of <strong>{week}</strong> has been <strong style="color:{color};">{action}</strong> by the HR team.
+</p>
+{'<p style="color:#374151;font-size:13px;"><strong>Comment:</strong> ' + comment + '</p>' if comment else ''}
+<table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;">
+<tr><td align="center">
+<a href="{portal_url}/admin/my-profile" style="display:inline-block;background:linear-gradient(135deg,#0d1b4b,#2563eb);color:#fff;text-decoration:none;padding:12px 32px;border-radius:10px;font-size:14px;font-weight:700;">View My Timesheet →</a>
+</td></tr>
+</table>
+<p style="color:#374151;font-size:13px;margin:0;">Warm Regards,<br><strong>HR Team</strong><br><span style="color:#2563eb;">Zayron Infotech Pvt. Ltd.</span></p>
+</td></tr>
+<tr><td style="background:#f8faff;padding:12px 32px;text-align:center;border-top:1px solid #e8ecf4;">
+<p style="color:#9ca3af;font-size:11px;margin:0;">© 2026 Zayron Infotech Pvt. Ltd. · HR Portal</p>
+</td></tr>
+</table></td></tr></table>
+</body></html>"""
+
+    msg = EmailMultiAlternatives(subject=subject, body=subject, from_email=settings.DEFAULT_FROM_EMAIL, to=[emp_email])
+    msg.attach_alternative(html_body, 'text/html')
+    msg.send()

@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'apps.ndas',
     'apps.documents',
     'apps.projects',
+    'apps.timesheets',
 ]
 
 MIDDLEWARE = [
