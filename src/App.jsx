@@ -27,21 +27,23 @@ export default function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
 
-          {/* Admin routes */}
+          {/* All logged-in users */}
           <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/admin/employees" element={<ProtectedRoute><EmployeeList /></ProtectedRoute>} />
-          <Route path="/admin/employees/new" element={<ProtectedRoute><CreateEmployee /></ProtectedRoute>} />
-          <Route path="/admin/employees/:id" element={<ProtectedRoute><EmployeeDetail /></ProtectedRoute>} />
-          <Route path="/admin/employees/:id/edit" element={<ProtectedRoute><EditEmployee /></ProtectedRoute>} />
-          <Route path="/admin/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
           <Route path="/admin/projects" element={<ProtectedRoute><ProjectList /></ProtectedRoute>} />
           <Route path="/admin/projects/assign" element={<ProtectedRoute><ProjectAssign /></ProtectedRoute>} />
           <Route path="/admin/projects/:id" element={<ProtectedRoute><ProjectDetail /></ProtectedRoute>} />
 
+          {/* Admin / HR only */}
+          <Route path="/admin/employees" element={<ProtectedRoute adminOnly><EmployeeList /></ProtectedRoute>} />
+          <Route path="/admin/employees/new" element={<ProtectedRoute adminOnly><CreateEmployee /></ProtectedRoute>} />
+          <Route path="/admin/employees/:id" element={<ProtectedRoute adminOnly><EmployeeDetail /></ProtectedRoute>} />
+          <Route path="/admin/employees/:id/edit" element={<ProtectedRoute adminOnly><EditEmployee /></ProtectedRoute>} />
+          <Route path="/admin/reports" element={<ProtectedRoute adminOnly><Reports /></ProtectedRoute>} />
+
           {/* Password reset (public) */}
           <Route path="/reset-password/:token" element={<ResetPassword />} />
 
-          {/* Employee onboarding routes (public) */}
+          {/* Employee onboarding (public) */}
           <Route path="/onboarding/:token/nda" element={<NDAForm />} />
           <Route path="/onboarding/:token/details" element={<DetailsForm />} />
           <Route path="/onboarding/:token/complete" element={<Completion />} />

@@ -55,17 +55,22 @@ def _make_qr_base64(uri):
 def _issue_jwt(mongo_user):
     """Get or create Django user from MongoDB doc and issue JWT tokens."""
     mongo_role = mongo_user.get('role', 'employee')
-    django_user, _ = User.objects.get_or_create(
+    django_user, created = User.objects.get_or_create(
         username=mongo_user['username'],
         defaults={
-            'email':      mongo_user.get('email', ''),
-            'first_name': mongo_user.get('first_name', ''),
-            'last_name':  mongo_user.get('last_name', ''),
-            'is_active':  True,
-            'is_staff':   mongo_user.get('is_staff', False),
+            'email':        mongo_user.get('email', ''),
+            'first_name':   mongo_user.get('first_name', ''),
+            'last_name':    mongo_user.get('last_name', ''),
+            'role':         mongo_role,
+            'is_active':    True,
+            'is_staff':     mongo_user.get('is_staff', False),
             'is_superuser': mongo_user.get('is_superuser', False),
         }
     )
+    if not created:
+        # Always sync role from MongoDB so permission classes work
+        User.objects.filter(pk=django_user.pk).update(role=mongo_role)
+        django_user.role = mongo_role
     refresh = RefreshToken.for_user(django_user)
     refresh['username']  = django_user.username
     refresh['role']      = mongo_role

@@ -174,7 +174,9 @@ export default function Layout({ title, actions, children }) {
               <div className="user-pill-avatar">{initials}</div>
               <div>
                 <div className="user-pill-name">{user?.full_name || user?.username}</div>
-                <div className="user-pill-role">{user?.role === 'superadmin' ? 'Super Admin' : 'Admin'}</div>
+                <div className="user-pill-role">
+                  {user?.role === 'superadmin' ? 'Super Admin' : user?.role === 'admin' ? 'Admin' : user?.role === 'hr' ? 'HR' : 'Employee'}
+                </div>
               </div>
             </div>
 

@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from apps.accounts.permissions import IsAdminOrHR
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 from .models import Project, Task, UserStory
@@ -10,7 +11,7 @@ from apps.employees.models import Employee
 
 
 class CompletedEmployeesView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def get(self, request):
         employees = Employee.objects.filter(status='completed').order_by('name')
@@ -18,7 +19,7 @@ class CompletedEmployeesView(APIView):
 
 
 class ProjectListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def get(self, request):
         projects = Project.objects.prefetch_related('assigned_employees', 'tasks').order_by('-created_at')
@@ -33,7 +34,7 @@ class ProjectListView(APIView):
 
 
 class ProjectDetailView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def get(self, request, pk):
         try:
@@ -62,7 +63,7 @@ class ProjectDetailView(APIView):
 
 
 class ProjectAssignEmployeeView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def post(self, request, pk):
         try:
@@ -92,7 +93,7 @@ class ProjectAssignEmployeeView(APIView):
 
 
 class TaskListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def post(self, request, project_id):
@@ -110,7 +111,7 @@ class TaskListView(APIView):
 
 
 class TaskDetailView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def put(self, request, pk):
@@ -133,7 +134,7 @@ class TaskDetailView(APIView):
 
 
 class UserStoryListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def post(self, request, task_id):
         try:
@@ -148,7 +149,7 @@ class UserStoryListView(APIView):
 
 
 class UserStoryDetailView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def delete(self, request, pk):
         try:

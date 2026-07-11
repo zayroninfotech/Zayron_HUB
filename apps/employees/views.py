@@ -2,6 +2,7 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from apps.accounts.permissions import IsAdminOrHR, IsSuperAdmin
 from django.db.models import Q, Count
 from django.http import HttpResponse
 from io import BytesIO
@@ -17,7 +18,7 @@ from utils.email_service import send_onboarding_email
 
 
 class EmployeeListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -52,7 +53,12 @@ class EmployeeListCreateView(generics.ListCreateAPIView):
 class EmployeeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
+
+    def destroy(self, request, *args, **kwargs):
+        if not IsSuperAdmin().has_permission(request, self):
+            return Response({'detail': 'Only superadmin can delete employees.'}, status=status.HTTP_403_FORBIDDEN)
+        return super().destroy(request, *args, **kwargs)
 
 
 class EmployeeByTokenView(APIView):
@@ -68,7 +74,7 @@ class EmployeeByTokenView(APIView):
 
 
 class DashboardStatsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def get(self, request):
         from django.utils import timezone
@@ -110,7 +116,7 @@ class DashboardStatsView(APIView):
 
 
 class ExportEmployeesView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def get(self, request):
         fmt = request.query_params.get('format', 'excel')
@@ -165,7 +171,7 @@ class ExportEmployeesView(APIView):
 
 
 class ResendEmailView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def post(self, request, pk):
         try:

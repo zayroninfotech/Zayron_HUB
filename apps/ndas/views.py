@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from apps.accounts.permissions import IsAdminOrHR
 
 from apps.employees.models import Employee
 from .models import NDADocument
@@ -52,7 +53,7 @@ class NDASubmitView(APIView):
 
 
 class NDADetailView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def get(self, request, employee_id):
         try:
@@ -63,7 +64,7 @@ class NDADetailView(APIView):
 
 
 class NDADownloadView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def get(self, request, employee_id):
         try:
@@ -78,7 +79,7 @@ class NDADownloadView(APIView):
 
 
 class NDARegenerateView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrHR]
 
     def post(self, request, employee_id):
         try:
