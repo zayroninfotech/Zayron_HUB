@@ -82,13 +82,7 @@ export default function EmployeeDetail() {
   )
 
   return (
-    <Layout title={employee.name} actions={
-      <div style={{ display: 'flex', gap: 8 }}>
-        <button onClick={resendEmail} className="btn btn-secondary">📧 Resend Onboarding</button>
-        <button onClick={resendCredentials} className="btn btn-secondary">🔑 Resend Credentials</button>
-        <Link to="/admin/employees" className="btn btn-secondary">← Back</Link>
-      </div>
-    }>
+    <Layout title={employee.name}>
       <style>{`
         .ed-wrap { padding: 20px 28px 40px; }
 
@@ -181,6 +175,13 @@ export default function EmployeeDetail() {
               {new Date(employee.joining_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}
             </div>
           </div>
+        </div>
+
+        {/* Action buttons */}
+        <div style={{ display: 'flex', gap: 8, margin: '14px 0 0' }}>
+          <button onClick={resendEmail} className="btn btn-secondary">📧 Resend Onboarding</button>
+          <button onClick={resendCredentials} className="btn btn-secondary">🔑 Resend Credentials</button>
+          <Link to="/admin/employees" className="btn btn-secondary">← Back</Link>
         </div>
 
         {/* Tab bar */}
