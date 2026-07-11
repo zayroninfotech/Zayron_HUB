@@ -362,6 +362,43 @@ class ResetPasswordView(APIView):
         return Response({'detail': 'Password reset successfully. You can now sign in.'})
 
 
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        current  = request.data.get('current_password', '')
+        new_pwd  = request.data.get('new_password', '')
+        confirm  = request.data.get('confirm_password', '')
+
+        if not current or not new_pwd or not confirm:
+            return Response({'detail': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if new_pwd != confirm:
+            return Response({'detail': 'New passwords do not match.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if len(new_pwd) < 8:
+            return Response({'detail': 'Password must be at least 8 characters.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if current == new_pwd:
+            return Response({'detail': 'New password must be different from current password.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Verify current password against MongoDB
+        mongo_user = _col('users').find_one({'username': request.user.username})
+        if not mongo_user or not check_password(current, mongo_user.get('password', '')):
+            return Response({'detail': 'Current password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        hashed = make_password(new_pwd)
+
+        # Update MongoDB
+        _col('users').update_one({'username': request.user.username}, {'$set': {'password': hashed}})
+
+        # Update Django user
+        request.user.set_password(new_pwd)
+        request.user.save()
+
+        return Response({'detail': 'Password changed successfully.'})
+
+
 # ── Existing views ────────────────────────────────────────────────────────────
 
 class LoginView(TokenObtainPairView):
