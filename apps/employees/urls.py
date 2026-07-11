@@ -6,9 +6,9 @@ from .views import (
 
 urlpatterns = [
     path('', EmployeeListCreateView.as_view(), name='employee-list'),
-    path('<int:pk>/', EmployeeDetailView.as_view(), name='employee-detail'),
-    path('token/<uuid:token>/', EmployeeByTokenView.as_view(), name='employee-by-token'),
     path('dashboard/stats/', DashboardStatsView.as_view(), name='dashboard-stats'),
     path('export/', ExportEmployeesView.as_view(), name='export-employees'),
-    path('<int:pk>/resend-email/', ResendEmailView.as_view(), name='resend-email'),
+    path('token/<uuid:token>/', EmployeeByTokenView.as_view(), name='employee-by-token'),
+    path('<str:pk>/resend-email/', ResendEmailView.as_view(), name='resend-email'),
+    path('<str:pk>/', EmployeeDetailView.as_view(), name='employee-detail'),
 ]

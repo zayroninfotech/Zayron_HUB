@@ -3,5 +3,5 @@ from .views import EmployeeDetailsSubmitView, EmployeeDetailsView
 
 urlpatterns = [
     path('submit/<uuid:token>/', EmployeeDetailsSubmitView.as_view(), name='details-submit'),
-    path('employee/<int:employee_id>/', EmployeeDetailsView.as_view(), name='details-view'),
+    path('employee/<str:employee_id>/', EmployeeDetailsView.as_view(), name='details-view'),
 ]

@@ -67,6 +67,11 @@ DATABASES = {
     }
 }
 
+# MongoDB — used directly via pymongo for all business data
+MONGO_URI        = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
+MONGO_DB         = os.getenv('MONGO_DB', 'Zayron_Portal')
+MONGO_TIMEOUT_MS = int(os.getenv('MONGO_TIMEOUT_MS', '10000'))
+
 AUTH_USER_MODEL = 'accounts.User'
 
 AUTH_PASSWORD_VALIDATORS = [

@@ -1,4 +1,3 @@
-import base64
 import os
 from io import BytesIO
 from datetime import datetime
@@ -6,25 +5,28 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 
-def generate_nda_pdf(nda_document):
-    employee = nda_document.employee
-    emp_type_label = 'Permanent Employee' if employee.employee_type == 'permanent' else 'Contract Employee'
+def generate_nda_pdf(emp, nda):
+    """
+    emp: dict with name, employee_type, etc.
+    nda: dict with full_name, address, mobile, aadhaar_number, emergency_contact,
+         signed_date, signature (base64 string)
+    Returns BytesIO of the generated PDF.
+    """
+    emp_type_label = 'Permanent Employee' if emp.get('employee_type') == 'permanent' else 'Contract Employee'
 
-    # Build absolute logo URL for weasyprint
     logo_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'logo1.png')
     logo_url = f'file:///{logo_path.replace(os.sep, "/")}'
 
-    # Signature data URL
     signature_data_url = None
-    if nda_document.signature:
-        sig = nda_document.signature
+    sig = nda.get('signature', '')
+    if sig:
         if not sig.startswith('data:'):
             sig = f'data:image/png;base64,{sig}'
         signature_data_url = sig
 
     context = {
-        'nda': nda_document,
-        'employee': employee,
+        'nda': nda,
+        'employee': emp,
         'emp_type_label': emp_type_label,
         'logo_url': logo_url,
         'signature_data_url': signature_data_url,

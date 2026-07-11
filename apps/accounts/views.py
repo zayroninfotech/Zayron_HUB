@@ -3,7 +3,6 @@ import base64
 import pyotp
 import qrcode
 
-from pymongo import MongoClient
 from django.conf import settings
 from django.core import signing
 from django.contrib.auth import get_user_model
@@ -11,6 +10,7 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.core.mail import EmailMultiAlternatives
 
 from utils.mail_logger import log_email
+from utils.mongo_db import col as _col
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -22,27 +22,17 @@ from .serializers import CustomTokenObtainPairSerializer, UserSerializer
 
 User = get_user_model()
 
-MONGO_URI  = getattr(settings, 'MONGO_URI', 'mongodb://localhost:27017/')
-DB_NAME    = 'Zayron_Portal'
-
 TEMP_SALT_CREDS = '2fa-creds-temp'
 TEMP_SALT_SETUP = '2fa-setup-temp'
 TEMP_MAX_AGE    = 300  # 5 minutes
 
 
 def _get_mongo_user(username):
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
-    db = client[DB_NAME]
-    user = db.users.find_one({'username': username})
-    client.close()
-    return user
+    return _col('users').find_one({'username': username})
 
 
 def _save_totp_secret(username, secret):
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
-    db = client[DB_NAME]
-    db.users.update_one({'username': username}, {'$set': {'totp_secret': secret}})
-    client.close()
+    _col('users').update_one({'username': username}, {'$set': {'totp_secret': secret}})
 
 
 def _make_qr_base64(uri):
@@ -209,18 +199,11 @@ RESET_MAX_AGE = 3600  # 1 hour
 
 
 def _get_mongo_user_by_email(email):
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
-    db = client[DB_NAME]
-    user = db.users.find_one({'email': email})
-    client.close()
-    return user
+    return _col('users').find_one({'email': email})
 
 
 def _update_mongo_password(username, hashed):
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
-    db = client[DB_NAME]
-    db.users.update_one({'username': username}, {'$set': {'password': hashed}})
-    client.close()
+    _col('users').update_one({'username': username}, {'$set': {'password': hashed}})
 
 
 def _send_reset_email(email, username, reset_link):
