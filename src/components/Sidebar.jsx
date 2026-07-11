@@ -110,9 +110,9 @@ export default function Sidebar({ open = true, onClose }) {
 
         .sb-overlay {
           position: fixed; inset: 0;
-          background: rgba(0,0,0,0.45); backdrop-filter: blur(2px);
+          background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
           z-index: 98; opacity: 0; pointer-events: none;
-          transition: opacity 0.28s;
+          transition: opacity 0.25s;
         }
         .sb-overlay.open { opacity: 1; pointer-events: auto; }
 
@@ -127,119 +127,170 @@ export default function Sidebar({ open = true, onClose }) {
 
         /* ── Left icon rail ── */
         .sb-rail {
-          width: 64px; height: 100%;
-          background: #111827;
-          border-right: 1px solid rgba(255,255,255,0.06);
+          width: 68px; height: 100%;
+          background: #0f172a;
+          border-right: 1px solid rgba(255,255,255,0.05);
           display: flex; flex-direction: column;
           align-items: center;
-          padding: 16px 0;
-          gap: 4px;
+          padding: 20px 0 16px;
+          gap: 6px;
           overflow-y: auto; overflow-x: hidden;
           flex-shrink: 0;
         }
         .sb-rail::-webkit-scrollbar { display: none; }
 
-        .sb-rail-logo {
-          width: 40px; height: 40px; border-radius: 11px; margin-bottom: 16px;
-          background: linear-gradient(135deg, #6366f1, #8b5cf6);
-          display: flex; align-items: center; justify-content: center;
-          flex-shrink: 0;
-          box-shadow: 0 4px 12px rgba(99,102,241,0.45);
-        }
-
         .sb-rail-btn {
-          width: 46px; height: 46px; border-radius: 12px;
+          width: 50px; height: 50px; border-radius: 14px;
           display: flex; flex-direction: column; align-items: center; justify-content: center;
-          gap: 3px; cursor: pointer; border: none;
-          background: transparent; color: rgba(255,255,255,0.35);
-          transition: all 0.18s; flex-shrink: 0;
-          padding: 0;
+          gap: 4px; cursor: pointer; border: none;
+          background: transparent; color: rgba(255,255,255,0.3);
+          transition: all 0.18s; flex-shrink: 0; padding: 0;
+          position: relative;
         }
         .sb-rail-btn:hover {
-          background: rgba(255,255,255,0.07);
-          color: rgba(255,255,255,0.75);
+          background: rgba(255,255,255,0.06);
+          color: rgba(255,255,255,0.7);
         }
         .sb-rail-btn.active {
-          background: rgba(99,102,241,0.2);
+          background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.15));
           color: #a5b4fc;
-          box-shadow: 0 0 0 1px rgba(99,102,241,0.35);
+          box-shadow: 0 0 0 1px rgba(99,102,241,0.3), 0 4px 12px rgba(99,102,241,0.2);
         }
-        .sb-rail-btn-label {
-          font-size: 8.5px; font-weight: 600; letter-spacing: 0.03em;
+        .sb-rail-btn.active::before {
+          content: '';
+          position: absolute; left: -1px; top: 25%; bottom: 25%;
+          width: 3px; border-radius: 0 3px 3px 0;
+          background: #6366f1;
+        }
+        .sb-rail-label {
+          font-size: 8px; font-weight: 700; letter-spacing: 0.04em;
           text-align: center; line-height: 1; white-space: nowrap;
+          text-transform: uppercase;
+        }
+
+        .sb-rail-divider {
+          width: 32px; height: 1px;
+          background: rgba(255,255,255,0.06);
+          margin: 4px 0; flex-shrink: 0;
         }
 
         .sb-rail-logout {
           margin-top: auto;
-          width: 46px; height: 46px; border-radius: 12px;
-          display: flex; align-items: center; justify-content: center;
-          cursor: pointer; border: none;
-          background: transparent; color: rgba(239,68,68,0.5);
+          width: 50px; height: 50px; border-radius: 14px;
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          gap: 4px; cursor: pointer; border: none;
+          background: transparent; color: rgba(239,68,68,0.45);
           transition: all 0.18s; flex-shrink: 0;
         }
         .sb-rail-logout:hover {
           background: rgba(239,68,68,0.1);
           color: #f87171;
         }
+        .sb-rail-logout-label {
+          font-size: 8px; font-weight: 700; letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
 
         /* ── Right panel ── */
         .sb-panel {
-          width: 200px; height: 100%;
-          background: #1a2234;
+          width: 210px; height: 100%;
+          background: #162032;
           display: flex; flex-direction: column;
           overflow: hidden;
+          border-right: 1px solid rgba(255,255,255,0.04);
         }
 
-        .sb-panel-header {
-          padding: 20px 16px 14px;
+        /* User profile card */
+        .sb-profile {
+          padding: 20px 16px 16px;
           border-bottom: 1px solid rgba(255,255,255,0.06);
           flex-shrink: 0;
         }
-        .sb-panel-role {
-          font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
-          text-transform: uppercase; color: rgba(255,255,255,0.25);
-          margin-bottom: 4px;
+        .sb-profile-avatar {
+          width: 46px; height: 46px; border-radius: 50%;
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          display: flex; align-items: center; justify-content: center;
+          color: white; font-size: 16px; font-weight: 800;
+          margin-bottom: 10px;
+          box-shadow: 0 4px 14px rgba(99,102,241,0.4);
+          border: 2px solid rgba(99,102,241,0.3);
         }
-        .sb-panel-section {
-          font-size: 14px; font-weight: 800; color: #f1f5f9;
-          letter-spacing: -0.01em;
+        .sb-profile-name {
+          font-size: 13.5px; font-weight: 700; color: #f1f5f9;
+          white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .sb-profile-role {
+          font-size: 10px; font-weight: 600; color: #818cf8;
+          text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px;
+        }
+
+        /* Section header */
+        .sb-section-head {
+          padding: 14px 16px 6px;
+          font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
+          text-transform: uppercase; color: rgba(255,255,255,0.2);
+          flex-shrink: 0;
         }
 
         .sb-panel-links {
-          flex: 1; overflow-y: auto; padding: 10px 8px;
+          flex: 1; overflow-y: auto; padding: 4px 10px 10px;
         }
-        .sb-panel-links::-webkit-scrollbar { width: 0; }
+        .sb-panel-links::-webkit-scrollbar { width: 3px; }
+        .sb-panel-links::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
 
         .sb-plink {
-          display: flex; align-items: center; gap: 10px;
-          padding: 9px 10px; border-radius: 9px;
-          color: rgba(255,255,255,0.45);
+          display: flex; align-items: center; gap: 11px;
+          padding: 10px 12px; border-radius: 10px;
+          color: rgba(255,255,255,0.42);
           font-size: 13px; font-weight: 500;
-          text-decoration: none; margin-bottom: 2px;
-          transition: all 0.15s;
+          text-decoration: none; margin-bottom: 3px;
+          transition: all 0.16s; position: relative;
         }
         .sb-plink:hover {
-          background: rgba(255,255,255,0.06);
-          color: rgba(255,255,255,0.85);
+          background: rgba(255,255,255,0.05);
+          color: rgba(255,255,255,0.82);
+          padding-left: 16px;
         }
         .sb-plink.active {
-          background: rgba(99,102,241,0.18);
+          background: rgba(99,102,241,0.15);
           color: #c7d2fe; font-weight: 600;
+          border: 1px solid rgba(99,102,241,0.2);
+        }
+        .sb-plink.active::after {
+          content: '';
+          position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+          width: 6px; height: 6px; border-radius: 50%;
+          background: #6366f1;
+          box-shadow: 0 0 6px rgba(99,102,241,0.8);
         }
         .sb-plink-icon {
-          flex-shrink: 0; opacity: 0.7;
+          flex-shrink: 0;
+          width: 28px; height: 28px; border-radius: 8px;
+          display: flex; align-items: center; justify-content: center;
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.06);
+          color: rgba(255,255,255,0.35);
+          transition: all 0.16s;
         }
-        .sb-plink.active .sb-plink-icon { opacity: 1; }
+        .sb-plink:hover .sb-plink-icon {
+          background: rgba(255,255,255,0.08);
+          color: rgba(255,255,255,0.7);
+        }
+        .sb-plink.active .sb-plink-icon {
+          background: rgba(99,102,241,0.2);
+          border-color: rgba(99,102,241,0.3);
+          color: #a5b4fc;
+        }
 
         .sb-panel-footer {
-          padding: 12px 8px 16px;
+          padding: 10px 10px 16px;
           border-top: 1px solid rgba(255,255,255,0.05);
           flex-shrink: 0;
         }
         .sb-version {
-          text-align: center; font-size: 9.5px;
-          color: rgba(255,255,255,0.1); letter-spacing: 0.03em;
-          margin-top: 8px;
+          text-align: center; font-size: 9px;
+          color: rgba(255,255,255,0.08); letter-spacing: 0.04em;
+          margin-top: 6px;
         }
       `}</style>
 
@@ -249,26 +300,28 @@ export default function Sidebar({ open = true, onClose }) {
 
         {/* ── Left icon rail ── */}
         <div className="sb-rail">
-          {/* Dashboard shortcut */}
+          {/* Dashboard */}
           <button
             className={`sb-rail-btn ${location.pathname === '/admin/dashboard' ? 'active' : ''}`}
-            onClick={() => navigate('/admin/dashboard')}
+            onClick={() => { setSelectedKey(null); navigate('/admin/dashboard') }}
             title="Dashboard"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-            <span className="sb-rail-btn-label">Dashboard</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <span className="sb-rail-label">Home</span>
           </button>
+
+          <div className="sb-rail-divider" />
 
           {/* Module icons */}
           {modules.map(m => (
             <button
               key={m.key}
-              className={`sb-rail-btn ${currentKey === m.key ? 'active' : ''}`}
+              className={`sb-rail-btn ${currentKey === m.key && location.pathname !== '/admin/dashboard' ? 'active' : ''}`}
               onClick={() => setSelectedKey(m.key)}
               title={m.label}
             >
               {m.icon}
-              <span className="sb-rail-btn-label">{m.label}</span>
+              <span className="sb-rail-label">{m.label}</span>
             </button>
           ))}
 
@@ -279,16 +332,26 @@ export default function Sidebar({ open = true, onClose }) {
               <polyline points="16 17 21 12 16 7"/>
               <line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
+            <span className="sb-rail-logout-label">Exit</span>
           </button>
         </div>
 
         {/* ── Right panel ── */}
         <div className="sb-panel">
-          <div className="sb-panel-header">
-            <div className="sb-panel-role">{ROLE_LABELS[userRole] || userRole}</div>
-            <div className="sb-panel-section">{currentModule?.label}</div>
+
+          {/* User profile */}
+          <div className="sb-profile">
+            <div className="sb-profile-avatar">
+              {(user?.full_name || user?.username || 'U').slice(0, 2).toUpperCase()}
+            </div>
+            <div className="sb-profile-name">{user?.full_name || user?.username || 'User'}</div>
+            <div className="sb-profile-role">{ROLE_LABELS[userRole] || userRole}</div>
           </div>
 
+          {/* Section label */}
+          <div className="sb-section-head">{currentModule?.label}</div>
+
+          {/* Links */}
           <div className="sb-panel-links">
             {currentModule?.links.map(({ to, label, icon }) => (
               <NavLink
