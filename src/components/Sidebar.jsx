@@ -277,20 +277,6 @@ export default function Sidebar({ open = true, onClose }) {
       <aside className={`sb-root ${open ? 'open' : ''}`}>
         <div className="sb-body">
 
-          {/* Header */}
-          <div className="sb-header">
-            <div className="sb-logo-mark">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-              </svg>
-            </div>
-            <div className="sb-brand">
-              <div className="sb-brand-name">Zayron Suite</div>
-              <div className="sb-brand-sub">HR Portal</div>
-            </div>
-            <div className="sb-live-dot" title="System Online" />
-          </div>
-
           {/* Nav */}
           <nav className="sb-nav">
             {navItems.map(({ section, links }) => (
