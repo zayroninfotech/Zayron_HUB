@@ -388,7 +388,7 @@ export default function Sidebar({ open = true, onClose }) {
           <div className="sb-panel-links">
             {currentModule?.links.map(({ to, label, icon }) => (
               <NavLink
-                key={to + label} to={to}
+                key={to + label} to={to} end
                 className={({ isActive }) => `sb-plink${isActive ? ' active' : ''}`}
               >
                 <span className="sb-plink-icon">{icon}</span>
