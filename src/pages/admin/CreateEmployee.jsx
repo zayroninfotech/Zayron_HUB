@@ -154,16 +154,11 @@ export default function CreateEmployee() {
 
         <form onSubmit={handleSubmit}>
 
-          <div className="ce-grid2">
-            <FloatInput label="Employee ID" value={form.employee_id} onChange={e => set('employee_id', e.target.value)} error={errors.employee_id} hint="Used as login username" required />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <FloatInput label="Employee ID" value={form.employee_id} onChange={e => set('employee_id', e.target.value)} error={errors.employee_id} required />
             <FloatInput label="Full Name As per Official ID" value={form.name} onChange={e => set('name', e.target.value)} error={errors.name} required />
-          </div>
-          <div className="ce-grid2">
-            <FloatInput label="Mobile Number" value={form.mobile} onChange={e => set('mobile', e.target.value)} error={errors.mobile} hint="10-digit number" required />
-            <FloatInput label="Personal Email Address" type="email" value={form.email} onChange={e => set('email', e.target.value)} error={errors.email} hint="Onboarding link will be sent here" required />
-          </div>
-
-          <div className="ce-grid2">
+            <FloatInput label="Mobile Number" value={form.mobile} onChange={e => set('mobile', e.target.value)} error={errors.mobile} required />
+            <FloatInput label="Personal Email Address" type="email" value={form.email} onChange={e => set('email', e.target.value)} error={errors.email} required />
             <FloatInput label="Employee Type" value={form.employee_type} onChange={e => set('employee_type', e.target.value)} error={errors.employee_type} required>
               <option value="">-- Select --</option>
               <option value="permanent">Permanent Employee</option>
