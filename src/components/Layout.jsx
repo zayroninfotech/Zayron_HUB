@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext'
 const SIDEBAR_W = 260
 
 export default function Layout({ title, actions, children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user } = useAuth()
   const initials = (user?.full_name || user?.username || 'A').slice(0, 2).toUpperCase()
   const today = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })
