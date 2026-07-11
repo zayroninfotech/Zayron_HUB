@@ -119,40 +119,7 @@ export default function CreateEmployee() {
   }
 
   return (
-    <Layout title="Add New Employee" actions={
-      <button onClick={() => navigate('/admin/employees')} style={backBtn}>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        Back to Employees
-      </button>
-    }>
-
-      {/* Hero banner */}
-      <div style={heroBanner}>
-        <div style={heroLeft}>
-          <div style={heroIcon}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <div>
-            <h2 style={{ color: 'white', fontSize: 20, fontWeight: 700, margin: 0 }}>New Employee Registration</h2>
-            <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: 5, fontSize: 13, lineHeight: 1.5 }}>
-              Register a new employee and automatically trigger their onboarding workflow at Zayron Infotech Pvt. Ltd.
-            </p>
-          </div>
-        </div>
-        <div style={heroBadges}>
-          {[
-            { icon: '✉️', label: 'Welcome Email', sub: 'Auto-sent' },
-            { icon: '📄', label: 'NDA Agreement', sub: 'Digital sign' },
-            { icon: '✅', label: 'Onboarding', sub: 'Self-service' },
-          ].map(s => (
-            <div key={s.label} style={heroBadge}>
-              <div style={{ fontSize: 20 }}>{s.icon}</div>
-              <div style={{ fontSize: 11, fontWeight: 600, marginTop: 5, color: 'white' }}>{s.label}</div>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginTop: 1 }}>{s.sub}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <Layout title="Add New Employee">
 
       {/* Body */}
       <div>
