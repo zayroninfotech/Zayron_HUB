@@ -235,13 +235,31 @@ class ResendCredentialsView(APIView):
         User = get_user_model()
         django_user = User.objects.filter(email=emp_email).first()
         raw_password = _generate_password()
+        username = _generate_username(emp_name, emp_email)
 
         if django_user:
+            # Update username and password on existing user
+            old_username = django_user.username
+            django_user.username = username
             django_user.set_password(raw_password)
+            django_user.first_name = emp_name.split()[0] if emp_name else ''
+            django_user.last_name = ' '.join(emp_name.split()[1:]) if len(emp_name.split()) > 1 else ''
             django_user.save()
-            username = django_user.username
+            # Update MongoDB - match by old username or email
+            col('users').update_one(
+                {'$or': [{'username': old_username}, {'email': emp_email}]},
+                {'$set': {
+                    'username': username,
+                    'password': make_password(raw_password),
+                    'first_name': emp_name.split()[0] if emp_name else '',
+                    'last_name': ' '.join(emp_name.split()[1:]) if len(emp_name.split()) > 1 else '',
+                    'role': 'employee',
+                    'employee_type': emp_type,
+                    'is_active': True,
+                }},
+                upsert=True,
+            )
         else:
-            username = _generate_username(emp_name, emp_email)
             django_user = User.objects.create_user(
                 username=username, email=emp_email, password=raw_password,
                 first_name=emp_name.split()[0] if emp_name else '',
