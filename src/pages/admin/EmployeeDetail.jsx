@@ -51,7 +51,7 @@ export default function EmployeeDetail() {
 
   const resendCredentials = async () => {
     try {
-      await api.post(`/details/resend-credentials/${id}/`)
+      await api.post(`/documents/resend-credentials/${id}/`)
       toast.success('Login credentials email sent successfully.')
     } catch (err) {
       toast.error(err.response?.data?.error || 'Failed to send credentials email.')
