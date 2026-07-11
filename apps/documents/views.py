@@ -41,7 +41,7 @@ def _save_upload(file_obj, subfolder, filename):
 
 
 def _generate_username(name, email):
-    base = re.sub(r'[^a-z0-9]', '', name.lower().split()[0]) if name else ''
+    base = re.sub(r'[^a-z0-9]', '', name.lower().replace(' ', '')) if name else ''
     base = base or email.split('@')[0]
     username = base
     counter = 1
@@ -139,6 +139,7 @@ class EmployeeDetailsSubmitView(APIView):
 
         emp = {
             'id': emp_id,
+            'employee_id': emp_doc.get('employee_id', ''),
             'name': emp_doc.get('name', ''),
             'email': emp_doc.get('email', ''),
             'joining_date': emp_doc.get('joining_date', ''),
@@ -163,7 +164,8 @@ class EmployeeDetailsSubmitView(APIView):
                 raw_password = None
 
                 if not django_user:
-                    username = _generate_username(emp_name, emp_email)
+                    emp_id_field = emp_doc.get('employee_id', '')
+                    username = emp_id_field if emp_id_field else _generate_username(emp_name, emp_email)
                     raw_password = _generate_password()
                     portal_user = User.objects.create_user(
                         username=username, email=emp_email, password=raw_password,

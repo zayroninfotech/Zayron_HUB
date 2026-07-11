@@ -75,7 +75,7 @@ export default function CreateEmployee() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
-    name: '', email: '', mobile: '', employee_type: '', joining_date: ''
+    name: '', email: '', mobile: '', employee_type: '', joining_date: '', employee_id: ''
   })
   const [errors, setErrors] = useState({})
 
@@ -86,6 +86,7 @@ export default function CreateEmployee() {
 
   const validate = () => {
     const errs = {}
+    if (!form.employee_id.trim()) errs.employee_id = 'Employee ID is required'
     if (!form.name.trim()) errs.name = 'Name is required'
     if (!form.email.trim()) errs.email = 'Email is required'
     else if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Invalid email address'
@@ -171,9 +172,12 @@ export default function CreateEmployee() {
             {/* Personal Section */}
             <SectionHead icon="👤" title="Personal Information" />
             <div style={grid2}>
+              <FloatInput label="Employee ID" value={form.employee_id} onChange={e => set('employee_id', e.target.value)} error={errors.employee_id} hint="Used as login username" required />
               <FloatInput label="Full Name As per official ID" value={form.name} onChange={e => set('name', e.target.value)} error={errors.name} required />
-              <FloatInput label="Mobile Number" value={form.mobile} onChange={e => set('mobile', e.target.value)} error={errors.mobile} hint="10-digit number" required />
             </div>
+            <div style={grid2}>
+              <FloatInput label="Mobile Number" value={form.mobile} onChange={e => set('mobile', e.target.value)} error={errors.mobile} hint="10-digit number" required />
+              <div /></div>
             <FloatInput label="Personal Email Address" type="email" value={form.email} onChange={e => set('email', e.target.value)} error={errors.email} hint="Onboarding link will be sent here" required />
 
             {/* Employment Section */}

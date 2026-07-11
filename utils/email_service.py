@@ -306,16 +306,22 @@ body {{ font-family: 'Segoe UI', Arial, sans-serif; background-color: #eef2f7; m
 
 
 def send_credentials_email(emp, username, password):
-    """emp: dict with name, email, id"""
+    """emp: dict with name, email, id, employee_id"""
     subject = 'Your Zayron Suite Portal Login Credentials'
     portal_url = getattr(settings, 'BASE_URL', 'https://zayrosuite.com')
+    emp_id = emp.get('employee_id', username)
 
     text_body = f"""Dear {emp['name']},
 
 Your onboarding is complete! Here are your Zayron Suite portal login credentials:
 
-Username: {username}
+Employee ID / Username: {emp_id}
 Password: {password}
+
+You can log in using any of the following:
+  - Employee ID: {emp_id}
+  - Username: {username}
+  - Personal Email: {emp['email']}
 
 Login at: {portal_url}
 
@@ -347,12 +353,22 @@ Zayron Infotech Pvt. Ltd.
 <p style="color:#374151;font-size:14px;line-height:1.7;margin:0 0 20px;">
 Dear <strong>{emp['name']}</strong>, your onboarding is now complete. You can log in to the <strong>Zayron Suite Portal</strong> using the credentials below.
 </p>
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:10px;margin-bottom:24px;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:10px;margin-bottom:16px;">
 <tr><td style="padding:18px 24px;">
-<span style="font-size:12px;color:#0369a1;font-weight:700;text-transform:uppercase;">Username</span><br>
-<span style="font-size:20px;font-weight:800;color:#0c4a6e;font-family:monospace;">{username}</span><br><br>
+<span style="font-size:12px;color:#0369a1;font-weight:700;text-transform:uppercase;">Employee ID / Username</span><br>
+<span style="font-size:20px;font-weight:800;color:#0c4a6e;font-family:monospace;">{emp_id}</span><br><br>
 <span style="font-size:12px;color:#0369a1;font-weight:700;text-transform:uppercase;">Password</span><br>
 <span style="font-size:20px;font-weight:800;color:#0c4a6e;font-family:monospace;">{password}</span>
+</td></tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f8faff;border:1px solid #dbeafe;border-radius:8px;margin-bottom:20px;">
+<tr><td style="padding:14px 20px;">
+<p style="font-size:12px;color:#1e40af;font-weight:700;margin:0 0 8px;text-transform:uppercase;letter-spacing:0.05em;">You can login using any of the following:</p>
+<p style="font-size:13px;color:#374151;margin:0;line-height:1.9;">
+&bull; <strong>Employee ID:</strong> {emp_id}<br>
+&bull; <strong>Username:</strong> {username}<br>
+&bull; <strong>Personal Email:</strong> {emp['email']}
+</p>
 </td></tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">

@@ -76,17 +76,20 @@ class EmployeeListCreateView(APIView):
 
     def post(self, request):
         data = request.data
-        required = ['name', 'email', 'mobile', 'employee_type', 'joining_date']
+        required = ['employee_id', 'name', 'email', 'mobile', 'employee_type', 'joining_date']
         missing = [f for f in required if not data.get(f)]
         if missing:
             return Response({'error': f'Missing fields: {", ".join(missing)}'}, status=status.HTTP_400_BAD_REQUEST)
 
         if col('employees').find_one({'email': data['email']}):
             return Response({'error': 'An employee with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+        if col('employees').find_one({'employee_id': data['employee_id']}):
+            return Response({'error': 'An employee with this ID already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
         token = str(uuid.uuid4())
         now = datetime.now(timezone.utc)
         doc = {
+            'employee_id': data['employee_id'],
             'name': data['name'],
             'email': data['email'],
             'mobile': data.get('mobile', ''),
