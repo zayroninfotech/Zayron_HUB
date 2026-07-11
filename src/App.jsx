@@ -8,7 +8,6 @@ import Dashboard from './pages/admin/Dashboard'
 import EmployeeList from './pages/admin/EmployeeList'
 import CreateEmployee from './pages/admin/CreateEmployee'
 import EmployeeDetail from './pages/admin/EmployeeDetail'
-import Reports from './pages/admin/Reports'
 import ProjectList from './pages/admin/projects/ProjectList'
 import ProjectDetail from './pages/admin/projects/ProjectDetail'
 import ProjectAssign from './pages/admin/projects/ProjectAssign'
@@ -43,7 +42,6 @@ export default function App() {
           <Route path="/admin/employees/new" element={<ProtectedRoute adminOnly><CreateEmployee /></ProtectedRoute>} />
           <Route path="/admin/employees/:id" element={<ProtectedRoute adminOnly><EmployeeDetail /></ProtectedRoute>} />
           <Route path="/admin/employees/:id/edit" element={<ProtectedRoute adminOnly><EditEmployee /></ProtectedRoute>} />
-          <Route path="/admin/reports" element={<ProtectedRoute adminOnly><Reports /></ProtectedRoute>} />
           <Route path="/admin/timesheet-approval" element={<ProtectedRoute adminOnly><TimesheetApproval /></ProtectedRoute>} />
 
           {/* Employee routes */}
