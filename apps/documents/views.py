@@ -163,8 +163,7 @@ class EmployeeDetailsSubmitView(APIView):
                 raw_password = _generate_password()
 
                 if not django_user:
-                    emp_id_field = emp_doc.get('employee_id', '')
-                    username = emp_id_field if emp_id_field else _generate_username(emp_name, emp_email)
+                    username = _generate_username(emp_name, emp_email)
                     django_user = User.objects.create_user(
                         username=username, email=emp_email, password=raw_password,
                         first_name=emp_name.split()[0] if emp_name else '',
@@ -242,7 +241,7 @@ class ResendCredentialsView(APIView):
             django_user.save()
             username = django_user.username
         else:
-            username = emp_id_field if emp_id_field else _generate_username(emp_name, emp_email)
+            username = _generate_username(emp_name, emp_email)
             django_user = User.objects.create_user(
                 username=username, email=emp_email, password=raw_password,
                 first_name=emp_name.split()[0] if emp_name else '',
