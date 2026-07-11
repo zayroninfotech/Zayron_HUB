@@ -154,10 +154,12 @@ export default function CreateEmployee() {
 
         <form onSubmit={handleSubmit}>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 12 }}>
             <FloatInput label="Employee ID" value={form.employee_id} onChange={e => set('employee_id', e.target.value)} error={errors.employee_id} required />
             <FloatInput label="Full Name As per Official ID" value={form.name} onChange={e => set('name', e.target.value)} error={errors.name} required />
             <FloatInput label="Mobile Number" value={form.mobile} onChange={e => set('mobile', e.target.value)} error={errors.mobile} required />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
             <FloatInput label="Personal Email Address" type="email" value={form.email} onChange={e => set('email', e.target.value)} error={errors.email} required />
             <FloatInput label="Employee Type" value={form.employee_type} onChange={e => set('employee_type', e.target.value)} error={errors.employee_type} required>
               <option value="">-- Select --</option>
