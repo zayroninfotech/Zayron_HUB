@@ -336,9 +336,6 @@ export default function Sidebar({ open = true, onClose }) {
         {/* ── LEFT RAIL ── */}
         <div className="sb-rail">
 
-          {/* Logo */}
-          <div className="sb-logo" title="Zayron Suite">Z</div>
-
           <div className="sb-rail-sep" />
 
           {/* Module icons */}
