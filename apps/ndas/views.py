@@ -7,7 +7,7 @@ from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.accounts.permissions import IsAdminOrHR
 from utils.mongo_db import col
@@ -112,7 +112,7 @@ class NDASubmitView(APIView):
 
 
 class NDADetailView(APIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, employee_id):
         doc = col('nda_documents').find_one({'employee_id': employee_id})

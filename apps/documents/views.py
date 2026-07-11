@@ -204,7 +204,7 @@ class EmployeeDetailsSubmitView(APIView):
 
 
 class EmployeeDetailsView(APIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, employee_id):
         doc = col('employee_details').find_one({'employee_id': employee_id})
