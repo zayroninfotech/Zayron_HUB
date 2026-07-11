@@ -27,8 +27,19 @@ TEMP_SALT_SETUP = '2fa-setup-temp'
 TEMP_MAX_AGE    = 300  # 5 minutes
 
 
-def _get_mongo_user(username):
-    return _col('users').find_one({'username': username})
+def _get_mongo_user(identifier):
+    """Lookup by username, email, or employee_id."""
+    user = (
+        _col('users').find_one({'username': identifier}) or
+        _col('users').find_one({'email': identifier})
+    )
+    if user:
+        return user
+    # Try employee_id — find the employee record, then get the user by email
+    emp = _col('employees').find_one({'employee_id': identifier})
+    if emp:
+        return _col('users').find_one({'email': emp.get('email', '')})
+    return None
 
 
 def _save_totp_secret(username, secret):
