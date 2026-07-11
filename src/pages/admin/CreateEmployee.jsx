@@ -151,22 +151,9 @@ export default function CreateEmployee() {
 
       <div className="ce-wrap">
 
-        {/* Notice */}
-        <div className="ce-notice">
-          <div className="ce-notice-icon">✉️</div>
-          <div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#3730a3' }}>Welcome Email Will Be Sent Automatically</div>
-            <div style={{ fontSize: 12, color: '#4f46e5', marginTop: 2 }}>A unique onboarding link will be emailed to the employee right after registration.</div>
-          </div>
-        </div>
 
         <form onSubmit={handleSubmit}>
 
-          {/* Personal */}
-          <div className="ce-section">
-            <div className="ce-section-bar" />
-            <span className="ce-section-label">Personal Information</span>
-          </div>
           <div className="ce-grid2">
             <FloatInput label="Employee ID" value={form.employee_id} onChange={e => set('employee_id', e.target.value)} error={errors.employee_id} hint="Used as login username" required />
             <FloatInput label="Full Name As per Official ID" value={form.name} onChange={e => set('name', e.target.value)} error={errors.name} required />
@@ -176,11 +163,6 @@ export default function CreateEmployee() {
             <FloatInput label="Personal Email Address" type="email" value={form.email} onChange={e => set('email', e.target.value)} error={errors.email} hint="Onboarding link will be sent here" required />
           </div>
 
-          {/* Employment */}
-          <div className="ce-section">
-            <div className="ce-section-bar" />
-            <span className="ce-section-label">Employment Details</span>
-          </div>
           <div className="ce-grid2">
             <FloatInput label="Employee Type" value={form.employee_type} onChange={e => set('employee_type', e.target.value)} error={errors.employee_type} required>
               <option value="">-- Select --</option>
