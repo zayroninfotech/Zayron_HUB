@@ -62,7 +62,7 @@ const hrNavItems = [
   },
 ]
 
-// Employee / IT Admin: dashboard + projects + own profile
+// Employee: dashboard + own profile + projects
 const employeeNavItems = [
   {
     section: 'MAIN',
@@ -79,6 +79,22 @@ const employeeNavItems = [
   },
 ]
 
+// IT Admin: dashboard + projects only
+const itAdminNavItems = [
+  {
+    section: 'MAIN',
+    links: [
+      { to: '/admin/dashboard', label: 'Dashboard', color: '#6366f1', icon: ICONS.dashboard },
+    ]
+  },
+  {
+    section: 'IT MANAGEMENT',
+    links: [
+      { to: '/admin/projects', label: 'Projects', color: '#8b5cf6', icon: ICONS.projects },
+    ]
+  },
+]
+
 const SIDEBAR_W = 260
 
 export default function Sidebar({ open = true, onClose }) {
@@ -86,7 +102,8 @@ export default function Sidebar({ open = true, onClose }) {
   const navigate = useNavigate()
   const userRole = user?.role
   const navItems = userRole === 'superadmin' ? superAdminNavItems
-    : ['hr'].includes(userRole) ? hrNavItems
+    : userRole === 'hr' ? hrNavItems
+    : userRole === 'it_admin' ? itAdminNavItems
     : employeeNavItems
   const handleLogout = () => { logout(); navigate('/login') }
   const displayName = user?.full_name || user?.username || 'User'
