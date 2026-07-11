@@ -163,9 +163,9 @@ export default function CreateEmployee() {
               <button type="submit" disabled={loading} style={submitBtn}>
                 {loading
                   ? <><span className="spinner" style={{ width: 18, height: 18 }} /> Creating Employee...</>
-                  : <>✉️ &nbsp;Create &amp; Send Onboarding Email</>}
+                  : <>Submit</>}
               </button>
-              <button type="button" onClick={() => navigate('/admin/employees')} style={cancelBtn}>Cancel</button>
+              <button type="button" onClick={() => { setForm({ name: '', email: '', mobile: '', employee_type: '', joining_date: '', employee_id: '' }); setErrors({}) }} style={cancelBtn}>Clear</button>
             </div>
           </form>
         </div>
