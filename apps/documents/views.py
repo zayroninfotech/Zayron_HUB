@@ -45,7 +45,7 @@ def _generate_username(name, email):
     base = base or email.split('@')[0]
     username = base
     counter = 1
-    while col('users').find_one({'username': username}):
+    while col('users').find_one({'username': username, 'email': {'$ne': email}}):
         username = f'{base}{counter}'
         counter += 1
     return username
@@ -162,26 +162,31 @@ class EmployeeDetailsSubmitView(APIView):
 
                 raw_password = _generate_password()
 
+                new_username = _generate_username(emp_name, emp_email)
+                first_name = emp_name.split()[0] if emp_name else ''
+                last_name = ' '.join(emp_name.split()[1:]) if len(emp_name.split()) > 1 else ''
+
                 if not django_user:
-                    username = _generate_username(emp_name, emp_email)
                     django_user = User.objects.create_user(
-                        username=username, email=emp_email, password=raw_password,
-                        first_name=emp_name.split()[0] if emp_name else '',
-                        last_name=' '.join(emp_name.split()[1:]) if len(emp_name.split()) > 1 else '',
-                        role='employee',
+                        username=new_username, email=emp_email, password=raw_password,
+                        first_name=first_name, last_name=last_name, role='employee',
                     )
                 else:
+                    # Always sync name and regenerate username to match current employee
+                    django_user.username = new_username
+                    django_user.first_name = first_name
+                    django_user.last_name = last_name
                     django_user.set_password(raw_password)
                     django_user.save()
 
                 col('users').update_one(
                     {'email': emp_email},
                     {'$set': {
-                        'username': django_user.username,
+                        'username': new_username,
                         'email': emp_email,
                         'password': make_password(raw_password),
-                        'first_name': emp_name.split()[0] if emp_name else '',
-                        'last_name': ' '.join(emp_name.split()[1:]) if len(emp_name.split()) > 1 else '',
+                        'first_name': first_name,
+                        'last_name': last_name,
                         'role': 'employee',
                         'employee_type': emp_type,
                         'is_active': True,
