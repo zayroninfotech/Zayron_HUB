@@ -4,30 +4,6 @@ import Layout from '../../components/Layout'
 
 const ACTIONS = [
   {
-    icon: '👤',
-    label: 'Add Employee',
-    sub: 'Invite & onboard a new team member',
-    to: '/admin/employees/new',
-    color: '#2563eb',
-    gradient: 'linear-gradient(135deg,#1e40af,#2563eb)',
-  },
-  {
-    icon: '👥',
-    label: 'All Employees',
-    sub: 'View and manage your team',
-    to: '/admin/employees',
-    color: '#0ea5e9',
-    gradient: 'linear-gradient(135deg,#0284c7,#0ea5e9)',
-  },
-  {
-    icon: '📋',
-    label: 'Project Tracker',
-    sub: 'Track tasks and project progress',
-    to: '/admin/projects',
-    color: '#7c3aed',
-    gradient: 'linear-gradient(135deg,#6d28d9,#7c3aed)',
-  },
-  {
     icon: '🗓️',
     label: 'Timesheet Approval',
     sub: 'Review and approve timesheets',
@@ -36,36 +12,12 @@ const ACTIONS = [
     gradient: 'linear-gradient(135deg,#047857,#059669)',
   },
   {
-    icon: '🧾',
-    label: 'Employee Onboarding',
-    sub: 'Start the onboarding process',
-    to: '/admin/employees/new',
-    color: '#d97706',
-    gradient: 'linear-gradient(135deg,#b45309,#d97706)',
-  },
-  {
-    icon: '📊',
-    label: 'Reports',
-    sub: 'Export HR reports and analytics',
-    to: '/admin/reports',
-    color: '#db2777',
-    gradient: 'linear-gradient(135deg,#be185d,#db2777)',
-  },
-  {
     icon: '🔑',
     label: 'My Profile',
     sub: 'View your account and details',
     to: '/admin/my-profile',
     color: '#64748b',
     gradient: 'linear-gradient(135deg,#475569,#64748b)',
-  },
-  {
-    icon: '🏗️',
-    label: 'Project Assign',
-    sub: 'Assign employees to projects',
-    to: '/admin/projects/assign',
-    color: '#0891b2',
-    gradient: 'linear-gradient(135deg,#0e7490,#0891b2)',
   },
 ]
 
